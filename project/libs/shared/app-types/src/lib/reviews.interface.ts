@@ -1,4 +1,4 @@
-export interface Comment {
+export interface Review {
   id?: number;
   createdAt: Date;
   taskId?: number;
