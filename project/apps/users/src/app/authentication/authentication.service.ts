@@ -44,12 +44,12 @@ export class AuthenticationService {
       throw new NotFoundException(AUTH_USER_NOT_FOUND);
     }
 
-    const blogUserEntity = new TaskUserEntity(existUser);
-    if (!await blogUserEntity.comparePassword(password)) {
+    const taskUserEntity = new TaskUserEntity(existUser);
+    if (!await taskUserEntity.comparePassword(password)) {
       throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
     }
 
-    return blogUserEntity.toObject();
+    return taskUserEntity.toObject();
   }
 
   public async getUser(id: string) {
