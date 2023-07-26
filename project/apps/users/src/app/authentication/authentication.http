@@ -1,0 +1,30 @@
+# Create a new user
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user@notfound.local",
+  "dateBirth": "2012-02-22",
+  "firstname": "Keks",
+  "lastname": "Smith",
+  "password": "123456",
+  "city": "Санкт-Петербург"
+}
+
+###
+
+# Get user by ID
+GET http://localhost:3000/api/auth/9ec93fb4-c4d7-4bc0-9007-c5dec37f76c3 HTTP/1.1
+
+###
+
+# Login user by email and password
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user@notfound.local",
+  "password": "123456"
+}
+
+###
