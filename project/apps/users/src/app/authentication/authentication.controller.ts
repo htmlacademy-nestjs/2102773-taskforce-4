@@ -23,7 +23,6 @@ export class AuthenticationController {
     const newUser = await this.authService.register(dto);
     return fillObject(UserRdo, newUser);
   }
-
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -33,6 +32,7 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
   })
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto) {
