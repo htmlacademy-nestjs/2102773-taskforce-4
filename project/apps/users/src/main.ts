@@ -9,7 +9,6 @@ import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 
-//const port = process.env.PORT || 3000;
 const globalPrefix = 'api';
 
 async function bootstrap() {

@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+  taskForce.task.postgres:
+    image: postgres:14-alpine
+    container_name: taskForce.task.postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: taskForce-task
+    ports:
+      - 5432:5432
+    volumes:
+      - taskForce.postgres.task:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - taskForce.task
+
+  taskForce.task.pgadmin:
+    image: dpage/pgadmin4
+    container_name: taskForce.task.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "keks@htmlacademy.local"
+      PGADMIN_DEFAULT_PASSWORD: "test"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - 8082:80
+    networks:
+      - taskForce.task
+
+volumes:
+  taskForce.postgres.task:
+
+networks:
+  taskForce.task:
+      driver: bridge
