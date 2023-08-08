@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  taskId      Int        @id @default(autoincrement()) @map("task_id")
+  title       String     @default("")
+  categories  Category[]
+  description String     @default("")
+  price       Int        @default(0)
+  address     String     @default("")
+  city        String     @default("Санкт-Петербург")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  publishAt   DateTime   @updatedAt @map("publish_at")
+  userId      String?    @map("user_id")
+  comments    Comment[]
+  favorite    Favorite[]
+  tags        Tag[]
+  dedline     DateTime   @default(now())
+  image       String     @default("")
+
+  @@map("tasks")
+}
+
+model Category {
+  categoryId Int    @id @default(autoincrement()) @map("category_id")
+  title      String
+  tasks      Task[]
+
+  @@map("categories")
+}
+
+model Comment {
+  commentId Int      @id @default(autoincrement()) @map("comment_id")
+  message   String
+  userId    String   @map("user_id")
+  task      Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
+  taskId    Int      @map("task_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("comments")
+}
+
+model Tag {
+  tagId     Int      @id @default(autoincrement()) @map("tag_id")
+  message   String
+  userId    String   @map("user_id")
+  task      Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
+  taskId    Int      @map("task_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("tags")
+}
+
+model Favorite {
+  favoriteId Int      @id @default(autoincrement()) @map("favorite_id")
+  task       Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade)
+  taskId     Int      @map("task_id")
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  @@map("favorites")
+}

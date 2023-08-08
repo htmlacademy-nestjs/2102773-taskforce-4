@@ -1,5 +1,5 @@
-export interface Comment {
-  id?: number;
+export interface Tag {
+  tagId?: number;
   createdAt: Date;
   updatedAt: Date;
   taskId?: number;

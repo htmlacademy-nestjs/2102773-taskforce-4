@@ -1,6 +1,6 @@
 import { Category } from "./category.interface";
 import { Comment } from "./comment.interface";
-import { UserCity } from "./user-city.enum";
+import { Tag } from "./tag.interface";
 
 export interface Task {
   id?: number;
@@ -9,11 +9,11 @@ export interface Task {
   description: string;
   price?: number;
   address?: string;
-  city: UserCity;
+  city: string;
   userId: string;
-  comments: Comment[];
-  tags?: string[];
-  dedline: Date;
+  comments?: Comment[];
+  tags?: Tag[];
+  dedline?: Date;
   image?: string;
   createdAt?: Date;
   publishAt?: Date;
