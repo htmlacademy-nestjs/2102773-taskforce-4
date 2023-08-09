@@ -3,7 +3,7 @@ export class UpdatePostDto {
   public description: string;
   public price?: number;
   public address?: string;
-  public city: string;
+  public cityId: number;
   public dedline: Date;
   public image?: string;
 }

@@ -7,7 +7,7 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
   public description: string;
   public price?: number;
   public address?: string;
-  public city: string;
+  public cityId: number;
   public publishAt: Date;
   public userId: string;
   public comments?: Comment[];
@@ -26,7 +26,7 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
     this.description = entity.description;
     this.price = entity.price;
     this.address = entity.address;
-    this.city = entity.city;
+    this.cityId = entity.cityId;
     this.publishAt = new Date();
     this.userId = entity.userId;
     this.comments = [];

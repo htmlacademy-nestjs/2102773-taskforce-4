@@ -3,9 +3,9 @@ POST http://localhost:3000/api/tasks HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Решить задачу",
+  "title": "Решить задачу2",
   "description": "Решить задачу по математике",
-  "city": "Санкт-Петербург",
+  "cityId": 3,
   "userId": "10",
   "categories": [3]
 }
@@ -13,7 +13,7 @@ Content-Type: application/json
 ###
 
 # Delete the task by id
-DELETE http://localhost:3000/api/tasks/2 HTTP/1.1
+DELETE http://localhost:3000/api/tasks/1 HTTP/1.1
 
 ###
 

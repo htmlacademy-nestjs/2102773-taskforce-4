@@ -22,12 +22,13 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         },
         tags: {
           connect: entityData.tags.map(({ tagId }) => ({ tagId }))
-        }
+        },
       },
       include: {
         comments: true,
         categories: true,
         tags: true,
+        city: true,
       }
     });
   }
@@ -49,6 +50,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         comments: true,
         categories: true,
         tags: true,
+        city: true,
       }
     });
   }
@@ -59,6 +61,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         comments: true,
         categories: true,
         tags: true,
+        city: true,
       }
     });
   }

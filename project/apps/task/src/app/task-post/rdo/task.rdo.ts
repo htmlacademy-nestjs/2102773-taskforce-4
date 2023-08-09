@@ -1,3 +1,4 @@
+import { City } from '@prisma/client';
 import { Category, Tag } from '@project/shared/app-types';
 import { Expose } from 'class-transformer';
 
@@ -30,7 +31,7 @@ export class TaskRdo {
   public address?: string;
 
   @Expose()
-  public city: string;
+  public city: City;
 
   @Expose()
   public dedline: Date;

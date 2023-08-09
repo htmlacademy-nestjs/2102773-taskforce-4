@@ -18,7 +18,8 @@ model Task {
   description String     @default("")
   price       Int        @default(0)
   address     String     @default("")
-  city        String     @default("Санкт-Петербург")
+  cityId      Int        @map("city_id")
+  city        City       @relation(fields: [cityId], references: [id])
   createdAt   DateTime   @default(now()) @map("created_at")
   publishAt   DateTime   @updatedAt @map("publish_at")
   userId      String?    @map("user_id")
@@ -71,4 +72,11 @@ model Favorite {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
   @@map("favorites")
+}
+
+model City {
+  id         Int      @id @default(autoincrement()) @map("city_id")
+  name       String
+  tasks      Task[]
+  @@map("cities")
 }

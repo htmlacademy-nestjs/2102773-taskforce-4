@@ -3,7 +3,7 @@ export class CreatePostDto {
   public description: string;
   public price?: number;
   public address?: string;
-  public city: string;
+  public cityId: number;
   public userId: string;
   public categories: number[];
   public tags?: string[];
