@@ -18,6 +18,10 @@ export class PostQuery {
   @IsOptional()
   public tags?: number[];
 
+  @Transform(({ value }) => value.split(',').map((id) => +id))
+  @IsOptional()
+  public city?: number[];
+
   @IsIn(['asc', 'desc'])
   @IsOptional()
   public sortDirection: 'desc' | 'asc' = DEFAULT_SORT_DIRECTION;

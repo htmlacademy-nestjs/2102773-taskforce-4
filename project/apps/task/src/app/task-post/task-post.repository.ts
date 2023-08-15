@@ -56,7 +56,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public find({limit, categories, tags, sortDirection, page}: PostQuery): Promise<Task[]> {
+  public find({limit, categories, city, sortDirection, page}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         categories: {
@@ -66,12 +66,8 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
             }
           }
         },
-        tags: {
-          some: {
-            tagId: {
-              in: tags
-            }
-          }
+         city: {
+          id: {in: city}
         }
       },
       take: limit,
