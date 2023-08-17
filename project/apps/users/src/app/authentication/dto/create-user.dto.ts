@@ -1,21 +1,21 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserCity } from "@project/shared/app-types";
 import { IsEmail, IsEnum, IsISO8601, IsString } from "class-validator";
-import { AUTH_USER_CITY, AUTH_USER_DATE_BIRTH_NOT_VALID, AUTH_USER_EMAIL_NOT_VALID } from "../authentication.constant";
+import { AuthUserError } from "../authentication.constant";
 
 export class CreateUserDto {
   @ApiProperty({
     description: 'User unique address',
     example: 'user@user.ru',
   })
-  @IsEmail({}, { message: AUTH_USER_EMAIL_NOT_VALID })
+  @IsEmail({}, { message: AuthUserError.EmailNotValid })
     public email: string;
 
   @ApiProperty({
     description: 'User birth date',
     example: '1981-03-12',
   })
-  @IsISO8601({}, { message: AUTH_USER_DATE_BIRTH_NOT_VALID })
+  @IsISO8601({}, { message: AuthUserError.DateBirthNotValid })
   public dateBirth: string;
 
   @ApiProperty({
@@ -43,6 +43,6 @@ export class CreateUserDto {
     description: 'User city',
     example: 'Санкт-Петербург'
   })
-  @IsEnum(UserCity, { message: AUTH_USER_CITY })
+  @IsEnum(UserCity, { message: AuthUserError.CityNotValid })
   public city: UserCity;
 }

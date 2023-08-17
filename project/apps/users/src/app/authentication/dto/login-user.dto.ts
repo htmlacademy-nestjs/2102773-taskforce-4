@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsString } from "class-validator";
-import { AUTH_USER_EMAIL_NOT_VALID } from "../authentication.constant";
+import { AuthUserError } from "../authentication.constant";
 
 export class LoginUserDto {
   @ApiProperty({
     description: 'User uniq email',
     example: 'user@user.ru',
   })
-  @IsEmail({}, { message: AUTH_USER_EMAIL_NOT_VALID })
+  @IsEmail({}, { message: AuthUserError.EmailNotValid })
   public email: string;
 
   @ApiProperty({

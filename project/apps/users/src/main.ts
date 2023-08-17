@@ -10,16 +10,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 
 const globalPrefix = 'api';
+const config = new DocumentBuilder()
+.setTitle('The «Users» service')
+.setDescription('Users service API')
+.setVersion('1.0')
+.build();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  const config = new DocumentBuilder()
-    .setTitle('The «Users» service')
-    .setDescription('Users service API')
-    .setVersion('1.0')
-    .build();
-
   app.setGlobalPrefix(globalPrefix);
 
   const configService = app.get(ConfigService);
