@@ -9,7 +9,7 @@ export interface Task {
   description: string;
   price?: number;
   address?: string;
-  city: string;
+  cityId: number;
   userId: string;
   comments?: Comment[];
   tags?: Tag[];

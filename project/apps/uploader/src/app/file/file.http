@@ -1,0 +1,16 @@
+# Upload some file
+POST http://localhost:3000/api/files/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="пароль почта.txt"
+
+< C:\Users\gerbe\Documents\пароль почта.txt
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# Get file by ID
+GET http://localhost:3000/api/files/64d7e101d450fceac45ffb77 HTTP/1.1
+
+###

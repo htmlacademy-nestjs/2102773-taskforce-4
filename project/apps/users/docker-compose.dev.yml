@@ -22,10 +22,10 @@ services:
       timeout: 10s
       retries: 5
 
-  typeoteka.user.mongo.ui:
+  taskForce.user.mongo.ui:
     image: mongo-express
     restart: always
-    container_name: typeoteka.user.mongo.ui
+    container_name: taskForce.user.mongo.ui
     ports:
       - 8081:8081
     environment:

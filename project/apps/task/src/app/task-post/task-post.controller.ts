@@ -1,46 +1,69 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { TaskPostService } from './task-post.service';
 import { fillObject } from '@project/util/util-core';
 import { TaskRdo } from './rdo/task.rdo';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PostQuery } from './query/post.query';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('task')
 @Controller('tasks')
 export class TaskPostController {
   constructor(
     private readonly taskPostService: TaskPostService
   ) {}
 
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'task found'
+  })
   @Get('/:id')
-  async show(@Param('id') id: string) {
-    const postId = parseInt(id, 10);
-    const post = await this.taskPostService.getTask(postId);
+  async show(@Param('id') id: number) {
+    const post = await this.taskPostService.getTask(id);
     return fillObject(TaskRdo, post);
   }
 
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task found'
+  })
   @Get('/')
-  async index() {
-    const posts = await this.taskPostService.getTasks();
+  async index(@Query() query: PostQuery) {
+    const posts = await this.taskPostService.getTasks(query);
     return fillObject(TaskRdo, posts);
   }
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new task has been successfully created.'
+  })
   @Post('/')
   async create(@Body() dto: CreatePostDto) {
     const newPost = await this.taskPostService.createTask(dto);
     return fillObject(TaskRdo, newPost);
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Task has been deleted.'
+  })
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id') id: string) {
-    const postId = parseInt(id, 10);
-    this.taskPostService.deleteTask(postId);
+  async destroy(@Param('id') id: number) {
+    this.taskPostService.deleteTask(id);
   }
 
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'Task has been updeted.'
+  })
   @Patch('/:id')
-  async update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
-    const postId = parseInt(id, 10);
-    const updatedTask = await this.taskPostService.updateTask(postId, dto);
+  async update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+    const updatedTask = await this.taskPostService.updateTask(id, dto);
     return fillObject(TaskRdo, updatedTask)
   }
 }

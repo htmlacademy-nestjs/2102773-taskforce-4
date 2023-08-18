@@ -3,6 +3,7 @@ import { CRUDRepository } from '@project/util/util-types';
 import { TaskPostEntity } from './task-post.entity';
 import { Task } from '@project/shared/app-types';
 import { PrismaService } from '../prisma/prisma.service';
+import { PostQuery } from './query/post.query';
 
 @Injectable()
 export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number, Task> {
@@ -22,12 +23,13 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         },
         tags: {
           connect: entityData.tags.map(({ tagId }) => ({ tagId }))
-        }
+        },
       },
       include: {
         comments: true,
         categories: true,
         tags: true,
+        city: true,
       }
     });
   }
@@ -49,17 +51,36 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         comments: true,
         categories: true,
         tags: true,
+        city: true,
       }
     });
   }
 
-  public find(): Promise<Task[]> {
+  public find({limit, categories, city, sortDirection, page}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
+      where: {
+        categories: {
+          some: {
+            categoryId: {
+              in: categories
+            }
+          }
+        },
+         city: {
+          id: {in: city}
+        }
+      },
+      take: limit,
       include: {
         comments: true,
         categories: true,
         tags: true,
-      }
+        city: true,
+      },
+      orderBy: [
+        { createdAt: sortDirection }
+      ],
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 
