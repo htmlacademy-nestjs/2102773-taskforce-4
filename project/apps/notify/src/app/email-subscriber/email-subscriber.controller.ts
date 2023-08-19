@@ -13,9 +13,9 @@ export class EmailSubscriberController {
   ) {}
 
   @RabbitSubscribe({
-    exchange: 'typoteka.notify',
+    exchange: 'taskForce.notify',
     routingKey: RabbitRouting.AddSubscriber,
-    queue: 'typoteka.notify',
+    queue: 'taskForce.notify',
   })
   public async create(subscriber: CreateSubscriberDto) {
     this.subscriberService.addSubscriber(subscriber);
