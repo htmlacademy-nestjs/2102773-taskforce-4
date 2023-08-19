@@ -1,0 +1,7 @@
+From: "User" <моя почта откуда отправляю>
+To: "Jonh" <моя почта куда отправляю>
+Subject: hi jonh
+
+Hi John,
+I’m sending this mail with curl thru my gmail account.
+Bye!
