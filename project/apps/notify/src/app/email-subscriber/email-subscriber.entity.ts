@@ -1,12 +1,16 @@
 import { Entity } from '@project/util/util-types';
-import { Subscriber } from '@project/shared/app-types';
+import { Subscriber, UserRole } from '@project/shared/app-types';
 
 export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, Subscriber {
   public id: string;
   public email: string;
-  public firstname: string;
-  public lastname: string;
-  public userId: string;
+  public title: string;
+  public description: string;
+  public price?: number;
+  public address?: string;
+  public cityId: number;
+  public dedline?: Date;
+  public role: UserRole;
 
   constructor(emailSubscriber: Subscriber) {
     this.fillEntity(emailSubscriber);
@@ -14,9 +18,14 @@ export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, Sub
 
   public fillEntity(entity) {
     this.email = entity.email;
-    this.lastname = entity.lastname;
-    this.firstname = entity.firstname;
+    this.title = entity.title;
+    this.description = entity.description;
+    this.price = entity.price;
+    this.address = entity.address;
+    this.cityId = entity.cityId;
+    this.dedline = entity.dedline;
     this.id = entity._id;
+    this.role = entity.role;
   }
 
   public toObject(): EmailSubscriberEntity {

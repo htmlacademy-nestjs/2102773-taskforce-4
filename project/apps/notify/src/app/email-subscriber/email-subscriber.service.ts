@@ -1,5 +1,5 @@
+import { CreateTaskSubscriberDto } from './dto/create-task-subscriber.dto';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
-import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { EmailSubscriberRepository } from './email-subscriber.repository';
 import { Injectable } from '@nestjs/common';
 
@@ -9,9 +9,9 @@ export class EmailSubscriberService {
     private readonly emailSubscriberRepository: EmailSubscriberRepository
   ) {}
 
-  public async addSubscriber(subscriber: CreateSubscriberDto) {
-    const { email } = subscriber;
-    const existsSubscriber = await this.emailSubscriberRepository.findByEmail(email);
+  public async addSubscriber(subscriber: CreateTaskSubscriberDto) {
+    const { title } = subscriber;
+    const existsSubscriber = await this.emailSubscriberRepository.findByTitle(title);
 
     if (existsSubscriber) {
       return existsSubscriber;
@@ -19,5 +19,9 @@ export class EmailSubscriberService {
 
     return this.emailSubscriberRepository
       .create(new EmailSubscriberEntity(subscriber));
+  }
+
+  public async getSubscribers() {
+    return this.emailSubscriberRepository.find()
   }
 }

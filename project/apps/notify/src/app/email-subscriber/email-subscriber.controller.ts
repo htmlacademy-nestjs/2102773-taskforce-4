@@ -1,11 +1,11 @@
-import { CreateSubscriberDto } from './dto/create-subscriber.dto';
+import { CreateTaskSubscriberDto } from './dto/create-task-subscriber.dto';
 import { EmailSubscriberService } from './email-subscriber.service';
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { RabbitRouting } from '@project/shared/app-types';
 import { MailService } from '../mail/mail.service';
 
-@Controller()
+@Controller('email')
 export class EmailSubscriberController {
   constructor(
     private readonly subscriberService: EmailSubscriberService,
@@ -17,8 +17,13 @@ export class EmailSubscriberController {
     routingKey: RabbitRouting.AddSubscriber,
     queue: 'taskForce.notify',
   })
-  public async create(subscriber: CreateSubscriberDto) {
+  public async create(subscriber: CreateTaskSubscriberDto) {
     this.subscriberService.addSubscriber(subscriber);
-    this.mailService.sendNotifyNewSubscriber(subscriber);
+  }
+
+  @Post()
+  public async show(@Body() dto: CreateTaskSubscriberDto) {
+    const subscribers = await this.subscriberService.getSubscribers()
+    this.mailService.sendNotifyNewSubscriber(subscribers, dto.email);
   }
 }

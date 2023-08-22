@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserCity } from "@project/shared/app-types";
+import { UserCity, UserRole } from "@project/shared/app-types";
 import { IsEmail, IsEnum, IsISO8601, IsString } from "class-validator";
 import { AuthUserError } from "../authentication.constant";
 
@@ -45,4 +45,7 @@ export class CreateUserDto {
   })
   @IsEnum(UserCity, { message: AuthUserError.CityNotValid })
   public city: UserCity;
+
+  @IsEnum(UserRole, { message: 'некорректная роль' })
+  public role: UserRole;
 }

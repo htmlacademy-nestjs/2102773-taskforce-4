@@ -13,10 +13,27 @@ export class EmailSubscriberModel extends Document implements  Subscriber {
   public email: string;
 
   @Prop()
-  public firstname: string;
+  public title: string;
 
   @Prop()
-  public lastname: string;
+  public description: string;
+
+  @Prop()
+  public price: number;
+
+  @Prop()
+  public address: string;
+
+  @Prop()
+  public cityId: number;
+
+  @Prop()
+  public dedline: Date;
+
+  @Prop()
+  public role: string;
+
+
 }
 
 export const EmailSubscriberSchema = SchemaFactory.createForClass(EmailSubscriberModel);

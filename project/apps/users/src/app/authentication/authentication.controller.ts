@@ -25,8 +25,8 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
-    const { email, firstname, lastname } = newUser;
-    await this.notifyService.registerSubscriber({ email, firstname, lastname })
+    // const { email, firstname, lastname, role } = newUser;
+    // await this.notifyService.registerSubscriber({ email, firstname, lastname, role })
     return fillObject(UserRdo, newUser);
   }
   @ApiResponse({
@@ -56,6 +56,9 @@ export class AuthenticationController {
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
+    console.log(existUser)
+    // const { email, firstname, lastname, role } = existUser;
+    // await this.notifyService.registerSubscriber({ email, firstname, lastname, role })
     return fillObject(UserRdo, existUser);
   }
 }

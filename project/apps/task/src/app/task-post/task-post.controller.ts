@@ -6,12 +6,14 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('task')
 @Controller('tasks')
 export class TaskPostController {
   constructor(
-    private readonly taskPostService: TaskPostService
+    private readonly taskPostService: TaskPostService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   @ApiResponse({
@@ -43,8 +45,17 @@ export class TaskPostController {
   @Post('/')
   async create(@Body() dto: CreatePostDto) {
     const newPost = await this.taskPostService.createTask(dto);
+    const {title, description, price, address, cityId, dedline} = newPost;
+    await this.notifyService.registerSubscriber({ title, description, price, address, cityId, dedline })
     return fillObject(TaskRdo, newPost);
   }
+
+  // @Post('/email')
+  // async email(@Query() query: PostQuery, @Body() email: string) {
+  //   const posts = await this.taskPostService.getTasks(query);
+  //   const [title, description, price, address, cityId, dedline] = posts;
+  //   await this.notifyService.registerSubscriber(email, [title, description, price, address, cityId, dedline])
+  // }
 
   @ApiResponse({
     status: HttpStatus.OK,
