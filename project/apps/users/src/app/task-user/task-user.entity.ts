@@ -12,6 +12,8 @@ export class TaskUserEntity implements User {
   public passwordHash: string;
   public role: UserRole;
   public city: UserCity;
+  public personalInfo: string;
+  public specialization: string[]
 
   constructor(taskUser: User) {
     this.fillEntity(taskUser);
@@ -28,6 +30,8 @@ export class TaskUserEntity implements User {
       passwordHash: this.passwordHash,
       role: this.role,
       city: this.city,
+      personalInfo: this.personalInfo,
+      specialization: this.specialization,
     };
   }
 
@@ -41,6 +45,8 @@ export class TaskUserEntity implements User {
     this.passwordHash = taskUser.passwordHash;
     this.role = taskUser.role;
     this.city = taskUser.city;
+    this.personalInfo = taskUser.personalInfo;
+    this.specialization = taskUser.specialization;
   }
 
   public async setPassword(password: string): Promise<TaskUserEntity> {

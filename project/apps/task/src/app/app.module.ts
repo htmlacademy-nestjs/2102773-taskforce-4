@@ -6,7 +6,12 @@ import { NotifyModule } from './notify/notify.module';
 import { ConfigTaskModule } from '@project/config/config-task';
 
 @Module({
-  imports: [PrismaModule, TaskCategoryModule, TaskPostModule, NotifyModule, ConfigTaskModule],
+  imports: [
+    PrismaModule,
+    TaskCategoryModule,
+    TaskPostModule,
+    NotifyModule,
+    ConfigTaskModule],
   controllers: [],
   providers: [],
 })

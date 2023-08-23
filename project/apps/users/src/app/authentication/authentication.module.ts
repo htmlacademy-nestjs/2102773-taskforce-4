@@ -6,7 +6,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { getJwtOptions } from '@project/config/config-users';
 import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
-import { NotifyModule } from '../notify/notify.module';
 
 @Module({
   imports: [
@@ -15,7 +14,6 @@ import { NotifyModule } from '../notify/notify.module';
       inject: [ConfigService],
       useFactory: getJwtOptions
     }),
-    NotifyModule,
   ],
   controllers: [AuthenticationController],
   providers: [

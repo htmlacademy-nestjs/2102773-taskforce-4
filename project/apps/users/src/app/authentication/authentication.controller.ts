@@ -8,14 +8,14 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { NotifyService } from '../notify/notify.service';
+import { UserRole } from '@project/shared/app-types';
+import { AdminUserRdo } from './rdo/admin-user.rdo';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
     private readonly authService: AuthenticationService,
-    private readonly notifyService: NotifyService,
   ) {}
 
   @ApiResponse({
@@ -25,8 +25,6 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
-    // const { email, firstname, lastname, role } = newUser;
-    // await this.notifyService.registerSubscriber({ email, firstname, lastname, role })
     return fillObject(UserRdo, newUser);
   }
   @ApiResponse({
@@ -56,9 +54,9 @@ export class AuthenticationController {
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    console.log(existUser)
-    // const { email, firstname, lastname, role } = existUser;
-    // await this.notifyService.registerSubscriber({ email, firstname, lastname, role })
+    if (existUser.role === UserRole.Admin) {
+      return fillObject(AdminUserRdo, existUser);
+    }
     return fillObject(UserRdo, existUser);
   }
 }

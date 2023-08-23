@@ -45,17 +45,10 @@ export class TaskPostController {
   @Post('/')
   async create(@Body() dto: CreatePostDto) {
     const newPost = await this.taskPostService.createTask(dto);
-    const {title, description, price, address, cityId, dedline} = newPost;
-    await this.notifyService.registerSubscriber({ title, description, price, address, cityId, dedline })
+    const {title} = newPost;
+    await this.notifyService.registerSubscriber({ title })
     return fillObject(TaskRdo, newPost);
   }
-
-  // @Post('/email')
-  // async email(@Query() query: PostQuery, @Body() email: string) {
-  //   const posts = await this.taskPostService.getTasks(query);
-  //   const [title, description, price, address, cityId, dedline] = posts;
-  //   await this.notifyService.registerSubscriber(email, [title, description, price, address, cityId, dedline])
-  // }
 
   @ApiResponse({
     status: HttpStatus.OK,

@@ -51,6 +51,12 @@ export class TaskUserModel extends Document implements User {
     default: UserCity.Peterburg,
   })
   public city: UserCity;
+
+  @Prop()
+  public personalInfo: string;
+
+  @Prop()
+  public specialization: string[];
 }
 
 export const TaskUserSchema = SchemaFactory.createForClass(TaskUserModel);

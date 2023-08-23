@@ -1,7 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserCity, UserRole } from "@project/shared/app-types";
-import { IsEmail, IsEnum, IsISO8601, IsString } from "class-validator";
+import { ArrayMaxSize, IsEmail, IsEnum, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
 import { AuthUserError } from "../authentication.constant";
+import dayjs from "dayjs";
+import { Transform } from "class-transformer";
 
 export class CreateUserDto {
   @ApiProperty({
@@ -15,8 +17,9 @@ export class CreateUserDto {
     description: 'User birth date',
     example: '1981-03-12',
   })
-  @IsISO8601({}, { message: AuthUserError.DateBirthNotValid })
-  public dateBirth: string;
+  @Transform(({ value }) => new Date(value))
+  @MaxDate(dayjs(new Date()).subtract(18, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
+  public dateBirth: Date;
 
   @ApiProperty({
     description: 'User first name',
@@ -37,6 +40,8 @@ export class CreateUserDto {
     example: '123456'
   })
   @IsString()
+  @MinLength(6, {message: AuthUserError.MinPasswordLength})
+  @MaxLength(12, {message: AuthUserError.MaxPasswordLength})
   public password: string;
 
   @ApiProperty({
@@ -46,6 +51,24 @@ export class CreateUserDto {
   @IsEnum(UserCity, { message: AuthUserError.CityNotValid })
   public city: UserCity;
 
-  @IsEnum(UserRole, { message: 'некорректная роль' })
+  @ApiProperty({
+    description: 'Role',
+    example: 'Исполнитель'
+  })
+  @IsEnum(UserRole, { message: AuthUserError.RoleNotValid })
   public role: UserRole;
+
+  @ApiProperty({
+    description: 'Personal information',
+    example: 'Женат'
+  })
+  @MaxLength(300, {message: AuthUserError.MaxPersInfoLength})
+  public personalInfo: string;
+
+  @ApiProperty({
+    description: 'Specialization',
+    example: 'электрик'
+  })
+  @ArrayMaxSize(5)
+  public specialization: string[];
 }

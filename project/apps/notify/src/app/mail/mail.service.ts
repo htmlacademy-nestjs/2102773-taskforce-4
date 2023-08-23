@@ -14,13 +14,16 @@ export class MailService {
     ) {}
 
   public sendNotifyNewSubscriber(subscribers: Subscriber[], email: string) {
+
+    const title = subscribers.map((subscriber) => subscriber.title)
+
       this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: email,
       subject: EMAIL_ADD_SUBSCRIBER_SUBJECT,
       template: './add-subscriber',
       context: {
-        title: subscribers.map((subscriber) => subscriber.title)
+        title: title
       }
     })
   }
