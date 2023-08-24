@@ -1,0 +1,9 @@
+From: Igor Antonov <a@iantonov.me>
+To: Keks <keks@htmlacademy.local>
+Subject: Hello Keks
+Content-Type: text/html; charset=utf8
+
+<html>
+<body>
+Hello, Keks!
+</body>

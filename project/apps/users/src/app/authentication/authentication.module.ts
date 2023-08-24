@@ -13,7 +13,7 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: getJwtOptions
-    })
+    }),
   ],
   controllers: [AuthenticationController],
   providers: [

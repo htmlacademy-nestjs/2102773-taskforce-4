@@ -11,4 +11,6 @@ export interface User {
   passwordHash: string;
   role: UserRole;
   city: UserCity;
+  personalInfo?: string;
+  specialization?: string[];
 }
