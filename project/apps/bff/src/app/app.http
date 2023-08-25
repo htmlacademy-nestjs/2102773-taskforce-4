@@ -1,0 +1,35 @@
+# Login user by email and password
+POST http://localhost:4000/api/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user@notfound.local",
+  "password": "123456"
+}
+
+###
+
+# Get new JWT pair
+POST http://localhost:4000/api/users/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGUzZDI5YzkwNTlkNjAyYmNhNTY3NmIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoiY29udHJhY3RvciIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzMiIsInRva2VuSWQiOiJlZTczNzA4ZS1hYTkxLTQ5MGUtODU2ZS1kMjM3ZTAwZTliNDAiLCJpYXQiOjE2OTI5NjgyOTUsImV4cCI6MTY5NTU2MDI5NX0.XcfTqa2ykUjEBEN1XpQ9-xdT_t-dkjihTD0mhOvcUhk
+
+
+###
+
+# Create a new task
+POST http://localhost:4000/api/task HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGUzZDI5YzkwNTlkNjAyYmNhNTY3NmIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoiY29udHJhY3RvciIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzMiIsImlhdCI6MTY5Mjk3MjcxMCwiZXhwIjoxNjkyOTczMzEwfQ.zW_ljsrbVt5V-i9IUxAl2QmZZKD5enba0ef3XL_WE7U
+Content-Type: application/json
+
+{
+  "title": "Решить задачу1112351dbeabea11111123456gegbebee789",
+  "description": "Решить задачу по математике Решить задачу по математике Решить задачу по математике Решить задачу по математике",
+  "cityId": 1,
+  "categories": [1],
+  "tags": [1],
+  "comments": [],
+  "price": 250,
+  "address": "1233451234567",
+  "dedline": "2023-08-28"
+}
+###
