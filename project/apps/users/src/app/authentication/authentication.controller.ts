@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRdo } from './rdo/user.rdo';
@@ -11,6 +11,7 @@ import { RequestWithTokenPayload, RequestWithUser, UserRole } from '@project/sha
 import { AdminUserRdo } from './rdo/admin-user.rdo';
 import { LocalAuthGuard } from './guards/local-auth-guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -64,12 +65,12 @@ export class AuthenticationController {
 
 
   @UseGuards(JwtRefreshGuard)
-  @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get a new access/refresh tokens'
   })
+  @Post('refresh')
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
   }
@@ -79,5 +80,18 @@ export class AuthenticationController {
   @Post('check')
   public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
     return payload;
+  }
+
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been updated.'
+  })
+  @UseGuards(JwtAuthGuard)
+  @Patch('update')
+  public async update(@Body() dto: UpdateUserDto, @Req() { user: payload }: RequestWithTokenPayload) {
+    console.log(payload)
+    const updateUser = await this.authService.updateUser(payload.sub, dto);
+    return fillObject(UserRdo, updateUser);
   }
 }

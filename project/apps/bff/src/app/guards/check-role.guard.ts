@@ -1,9 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from '../app.config';
+import { UserRole } from '@project/shared/app-types';
 
 @Injectable()
-export class CheckAuthGuard implements CanActivate {
+export class CheckRoleGuard implements CanActivate {
   constructor(
     private readonly httpService: HttpService,
   ) {}
@@ -16,7 +17,11 @@ export class CheckAuthGuard implements CanActivate {
       }
     })
 
-    request['user'] = data;
+    if (data.role !== UserRole.Admin) {
+      throw new NotFoundException(`Только пользователь с ролью ${UserRole.Admin} может создавать задачи`);
+    }
+
+    //request['user'] = data;
 
     return true;
 

@@ -33,3 +33,5 @@ export function parseTime(time: string): TimeAndUnit {
 
   return { value, unit }
 }
+
+export const makeUniq = (arr: string[]) => [...new Set(arr)]

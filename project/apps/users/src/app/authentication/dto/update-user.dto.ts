@@ -1,22 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserCity, UserRole } from "@project/shared/app-types";
-import { ArrayMaxSize, IsEmail, IsEnum, IsOptional, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
+import { UserCity } from "@project/shared/app-types";
+import { ArrayMaxSize, IsEnum, IsOptional, IsString, MaxDate, MaxLength } from "class-validator";
 import { AuthUserError } from "../authentication.constant";
 import dayjs from "dayjs";
 import { Transform } from "class-transformer";
 
-export class CreateUserDto {
-  @ApiProperty({
-    description: 'User unique address',
-    example: 'user@user.ru',
-  })
-  @IsEmail({}, { message: AuthUserError.EmailNotValid })
-    public email: string;
-
+export class UpdateUserDto {
   @ApiProperty({
     description: 'User birth date',
     example: '1981-03-12',
   })
+  @IsOptional()
   @Transform(({ value }) => new Date(value))
   @MaxDate(dayjs(new Date()).subtract(18, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
   public dateBirth: Date;
@@ -25,6 +19,7 @@ export class CreateUserDto {
     description: 'User first name',
     example: 'Keks',
   })
+  @IsOptional()
   @IsString()
   public firstname: string;
 
@@ -32,31 +27,17 @@ export class CreateUserDto {
     description: 'User last name',
     example: 'Ivanov'
   })
+  @IsOptional()
   @IsString()
   public lastname: string;
-
-  @ApiProperty({
-    description: 'User password',
-    example: '123456'
-  })
-  @IsString()
-  @MinLength(6, {message: AuthUserError.MinPasswordLength})
-  @MaxLength(12, {message: AuthUserError.MaxPasswordLength})
-  public password: string;
 
   @ApiProperty({
     description: 'User city',
     example: 'Санкт-Петербург'
   })
+  @IsOptional()
   @IsEnum(UserCity, { message: AuthUserError.CityNotValid })
   public city: UserCity;
-
-  @ApiProperty({
-    description: 'Role',
-    example: 'Исполнитель'
-  })
-  @IsEnum(UserRole, { message: AuthUserError.RoleNotValid })
-  public role: UserRole;
 
   @ApiProperty({
     description: 'Personal information',

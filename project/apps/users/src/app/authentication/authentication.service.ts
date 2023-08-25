@@ -9,8 +9,9 @@ import { ConfigService, ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from '@project/config/config-users';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
-import { createJWTPayload } from '@project/util/util-core';
+import { createJWTPayload, makeUniq } from '@project/util/util-core';
 import * as crypto from 'node:crypto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -26,7 +27,7 @@ export class AuthenticationService {
     const {email, firstname, lastname, password, dateBirth, city, role, specialization, personalInfo } = dto;
 
     const taskUser = {
-      email, firstname, lastname, role, city, dateBirth, specialization, personalInfo,
+      email, firstname, lastname, role, city, dateBirth, specialization: makeUniq(specialization), personalInfo,
       avatar: '', passwordHash: ''
     };
 
@@ -62,6 +63,11 @@ export class AuthenticationService {
 
   public async getUser(id: string) {
     return this.taskUserRepository.findById(id);
+  }
+
+  public async updateUser(id: string, dto: UpdateUserDto) {
+    return this.taskUserRepository
+      .update(id, dto)
   }
 
   public async createUserToken(user: User) {
