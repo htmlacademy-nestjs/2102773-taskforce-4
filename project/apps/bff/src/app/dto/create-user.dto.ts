@@ -1,14 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UserCity } from "@project/shared/app-types";
-import { IsOptional, IsString } from "class-validator";
+import { UserCity, UserRole } from "@project/shared/app-types";
+import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 import { Transform } from "class-transformer";
 
-export class UpdateUserDto {
+export class CreateUserDto {
+  @ApiProperty({
+    description: 'User unique address',
+    example: 'user@user.ru',
+  })
+  @IsEmail({})
+    public email: string;
+
   @ApiProperty({
     description: 'User birth date',
     example: '1981-03-12',
   })
-  @IsOptional()
   @Transform(({ value }) => new Date(value))
   public dateBirth: Date;
 
@@ -16,7 +22,6 @@ export class UpdateUserDto {
     description: 'User first name',
     example: 'Keks',
   })
-  @IsOptional()
   @IsString()
   public firstname: string;
 
@@ -24,16 +29,29 @@ export class UpdateUserDto {
     description: 'User last name',
     example: 'Ivanov'
   })
-  @IsOptional()
   @IsString()
   public lastname: string;
+
+  @ApiProperty({
+    description: 'User password',
+    example: '123456'
+  })
+  @IsString()
+  public password: string;
 
   @ApiProperty({
     description: 'User city',
     example: 'Санкт-Петербург'
   })
-  @IsOptional()
+  @IsEnum(UserCity)
   public city: UserCity;
+
+  @ApiProperty({
+    description: 'Role',
+    example: 'Исполнитель'
+  })
+  @IsEnum(UserRole)
+  public role: UserRole;
 
   @ApiProperty({
     description: 'Personal information',

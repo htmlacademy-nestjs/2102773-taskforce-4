@@ -12,6 +12,7 @@ import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { createJWTPayload, makeUniq } from '@project/util/util-core';
 import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -59,6 +60,23 @@ export class AuthenticationService {
     }
 
     return taskUserEntity.toObject();
+  }
+
+  public async changePassword(id: string, dto: ChangePasswordDto) {
+    const {password, newPassword} = dto;
+    const user = await this.taskUserRepository.findById(id);
+
+    const userEntity = new TaskUserEntity(user);
+
+    if (!await userEntity.comparePassword(password)) {
+      throw new UnauthorizedException(AuthUserError.PasswordWrong);
+    }
+
+    const newUserEntity = await userEntity.setPassword(newPassword)
+
+    return this.taskUserRepository
+      .update(id, newUserEntity);
+
   }
 
   public async getUser(id: string) {

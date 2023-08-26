@@ -12,6 +12,7 @@ import { AdminUserRdo } from './rdo/admin-user.rdo';
 import { LocalAuthGuard } from './guards/local-auth-guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -90,8 +91,15 @@ export class AuthenticationController {
   @UseGuards(JwtAuthGuard)
   @Patch('update')
   public async update(@Body() dto: UpdateUserDto, @Req() { user: payload }: RequestWithTokenPayload) {
-    console.log(payload)
     const updateUser = await this.authService.updateUser(payload.sub, dto);
     return fillObject(UserRdo, updateUser);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('changePassword')
+  public async changePassword(@Body() dto: ChangePasswordDto, @Req() { user: payload }: RequestWithTokenPayload) {
+    const changePassword = await this.authService.changePassword(payload.sub, dto);
+    return fillObject(UserRdo, changePassword)
+  }
+
 }

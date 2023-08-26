@@ -1,10 +1,28 @@
+# Create a new user
+POST http://localhost:4000/api/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user3@notfound.local",
+  "dateBirth": "2004-09-21",
+  "firstname": "Keks",
+  "lastname": "Smith",
+  "password": "123456",
+  "city": "Москва",
+  "role": "Заказчик",
+  "specialization": ["электрик", "электрик", "электрик", "электрик", "agwgw"],
+  "personalInfo": "Женат"
+}
+
+###
+
 # Login user by email and password
 POST http://localhost:4000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
   "email": "user@notfound.local",
-  "password": "123456"
+  "password": "12345678"
 }
 
 ###
@@ -15,6 +33,32 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGUzZDI5Y
 
 
 ###
+
+# Update user
+PATCH http://localhost:4000/api/users/update HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTBlM2ZjOWQyOTczYzE3ZmU3YjAiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoiY3VzdG9tZXIiLCJsYXN0bmFtZSI6IlNtaXRoIiwiZmlyc3RuYW1lIjoiS2VrcyIsImlhdCI6MTY5MzAzMjcwMSwiZXhwIjoxNjkzMDMzMzAxfQ.jZY2qAbptYLH2GcmeK3W2sw7U43wq4dwMdLv9TlGH5I
+
+{
+  "firstname": "Keks7",
+  "lastname": "Smith2"
+}
+
+###
+
+# Change user password
+PATCH http://localhost:4000/api/users/changePassword HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwiaWF0IjoxNjkzMDM1OTg1LCJleHAiOjE2OTMwMzY1ODV9.2Hv8ms6-u825XydfnMxU0x_k7Q9B7u9DUFvp-lXsA40
+
+{
+  "password": "1234567",
+  "newPassword": "12345"
+}
+
+###
+
+###################################################
 
 # Create a new task
 POST http://localhost:4000/api/task HTTP/1.1
@@ -35,14 +79,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU4ZTMwN
 
 ###
 
-# Update user
-PATCH http://localhost:4000/api/users/update HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU4ZTMwNGYzNzRhNzNjNGMwODQwZTgiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoiY29udHJhY3RvciIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzNiIsImlhdCI6MTY5Mjk5NzkzMywiZXhwIjoxNjkyOTk4NTMzfQ.U_umuAyGatQRi83N6IVjpNGcdbzFC9RxPxH7QFpAdSU
-
-{
-  "firstname": "Keks7",
-  "lastname": "Smith2"
-}
-
-###

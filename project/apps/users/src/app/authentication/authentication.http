@@ -53,3 +53,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU4ZTMwN
 POST http://localhost:3333/api/auth/check HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU2NDlkMTBkMmU0ZDY2MTM2Mjg3ZGYiLCJlbWFpbCI6InVzZXI5N0Bub3Rmb3VuZC5sb2NhbCIsInJvbGUiOiJjb250cmFjdG9yIiwibGFzdG5hbWUiOiJTbWl0aCIsImZpcnN0bmFtZSI6Iktla3MyIiwiaWF0IjoxNjkyOTczMzE2LCJleHAiOjE2OTI5NzM5MTZ9.REbr3Kx-wc2ZPwPLQoFXr3fPIuugzSQUxlIeBRdHh7A
 ###
+
+# Change user password
+PATCH http://localhost:3333/api/auth/changePassword HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwiaWF0IjoxNjkzMDM1NTI4LCJleHAiOjE2OTMwMzYxMjh9.lhxOX_ShU3O5W3sRd0O59C9JXo-3pS7eG6XzXSRhX2I
+
+{
+  "password": "1234567",
+  "newPassword": "12345678"
+}
+
+###
+
