@@ -58,6 +58,12 @@ export class CreatePostDto {
   public categories: number[];
 
   @ApiProperty({
+    description: 'Task comment id',
+    example: '1',
+  })
+  public comments: number[];
+
+  @ApiProperty({
     description: 'Task tags',
     example: 'срочно',
   })

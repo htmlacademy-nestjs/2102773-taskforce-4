@@ -6,17 +6,20 @@ import { Task } from '@project/shared/app-types';
 import { TaskPostEntity } from './task-post.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
+import { TaskCommentRepository } from '../task-comment/task-comment.repository';
 
 @Injectable()
 export class TaskPostService {
   constructor(
     private readonly taskPostRepository: TaskPostRepository,
-    private readonly taskCategoryRepository: TaskCategoryRepository
+    private readonly taskCategoryRepository: TaskCategoryRepository,
+    private readonly taskCommentRepository: TaskCommentRepository
   ) {}
 
   async createTask(dto: CreatePostDto): Promise<Task> {
     const categories = await this.taskCategoryRepository.find(dto.categories);
-    const postEntity = new TaskPostEntity({ ...dto, categories, comments: [], tags: [] });
+    const comments = await this.taskCommentRepository.find();
+    const postEntity = new TaskPostEntity({ ...dto, categories, comments, tags: [] });
     return this.taskPostRepository.create(postEntity);
   }
 

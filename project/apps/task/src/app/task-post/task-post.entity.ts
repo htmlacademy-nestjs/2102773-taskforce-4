@@ -29,7 +29,7 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
     this.cityId = entity.cityId;
     this.publishAt = new Date();
     this.userId = entity.userId;
-    this.comments = [];
+    this.comments = [...entity.comments];
     this.categories = [...entity.categories];
     this.tags = [];
     this.dedline = entity.dedline;

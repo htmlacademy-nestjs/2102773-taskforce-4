@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from '../app.config';
 
 @Injectable()
-export class CheckAuthGuard implements CanActivate {
+export class CheckUserGuard implements CanActivate {
   constructor(
     private readonly httpService: HttpService,
   ) {}
@@ -16,9 +16,13 @@ export class CheckAuthGuard implements CanActivate {
       }
     })
 
-    request['user'] = data;
+    const user = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Comment}/${request.params.id}`);
 
-    return true;
+    if (user.data.userId === data.sub) {
+      return true
+    }
+
+    return false;
 
   }
 }
