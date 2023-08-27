@@ -33,7 +33,6 @@ export class TaskController {
     return data;
   }
 
-  @UseGuards(CheckAuthGuard)
   @Get('/comments')
   public async indexComments(@Query() query: PostQuery) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Comment}/`, {params: query});

@@ -7,7 +7,7 @@ export class CommentRto {
     example: '1'
   })
   @Expose()
-  public id: string;
+  public commentId: string;
 
   @ApiProperty({
     description: 'Comment message',
