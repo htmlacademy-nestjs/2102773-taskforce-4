@@ -84,7 +84,32 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public update(_id: number, _item: TaskPostEntity): Promise<Task> {
-    return Promise.resolve(undefined);
+  public update(taskId: number, item: TaskPostEntity): Promise<Task> {
+    return this.prisma.task.update({
+      where: {
+        taskId,
+        },
+      data: {
+        ...item.toObject(),
+        comments: {
+          connect: item.toObject().comments
+          .map(({ commentId }) => ({ commentId }))
+        },
+        categories: {
+          connect: item.toObject().categories
+            .map(({ categoryId }) => ({ categoryId }))
+        },
+        tags: {
+          connect: item.toObject().tags.map(({ tagId }) => ({ tagId }))
+        }
+      },
+      include: {
+        comments: true,
+        categories: true,
+        tags: true,
+        city: true,
+      }
+    });
+
   }
 }

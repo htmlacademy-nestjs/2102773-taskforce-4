@@ -4,7 +4,7 @@ import { ApplicationServiceURL } from '../app.config';
 import { UserRole } from '@project/shared/app-types';
 
 @Injectable()
-export class CheckRoleGuard implements CanActivate {
+export class CheckUserRoleGuard implements CanActivate {
   constructor(
     private readonly httpService: HttpService,
   ) {}
@@ -17,11 +17,9 @@ export class CheckRoleGuard implements CanActivate {
       }
     })
 
-    if (data.role !== UserRole.Admin) {
-      throw new NotFoundException(`Только пользователь с ролью ${UserRole.Admin} может создавать задачи`);
+    if (data.role !== UserRole.User) {
+      throw new NotFoundException(`Только пользователь с ролью ${UserRole.User} может откликаться на задачи`);
     }
-
-    //request['user'] = data;
 
     return true;
 

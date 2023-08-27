@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../../../../node_modules/.prisma/client"
+  output   = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -12,22 +12,25 @@ datasource db {
 }
 
 model Task {
-  taskId      Int        @id @default(autoincrement()) @map("task_id")
-  title       String     @default("")
-  categories  Category[]
-  description String     @default("")
-  price       Int        @default(0)
-  address     String     @default("")
-  cityId      Int        @map("city_id")
-  city        City       @relation(fields: [cityId], references: [id])
-  createdAt   DateTime   @default(now()) @map("created_at")
-  publishAt   DateTime   @updatedAt @map("publish_at")
-  userId      String?    @map("user_id")
-  comments    Comment[]
-  favorite    Favorite[]
-  tags        Tag[]
-  dedline     DateTime   @default(now())
-  image       String     @default("")
+  taskId           Int        @id @default(autoincrement()) @map("task_id")
+  title            String     @default("")
+  categories       Category[]
+  description      String     @default("")
+  price            Int        @default(0)
+  address          String     @default("")
+  cityId           Int        @map("city_id")
+  city             City       @relation(fields: [cityId], references: [id])
+  createdAt        DateTime   @default(now()) @map("created_at")
+  publishAt        DateTime   @updatedAt @map("publish_at")
+  userId           String?    @map("user_id")
+  comments         Comment[]
+  favorite         Favorite[]
+  tags             Tag[]
+  dedline          DateTime   @default(now())
+  image            String     @default("")
+  status           String     @default("Новое")
+  usersResponsesId String[]   @default([]) @map("users_response_id")
+  contractorId     String?     @map("contractor_id")
 
   @@map("tasks")
 }
@@ -71,12 +74,14 @@ model Favorite {
   userId     String   @map("user_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
   @@map("favorites")
 }
 
 model City {
-  id         Int      @id @default(autoincrement()) @map("city_id")
-  name       String
-  tasks      Task[]
+  id    Int    @id @default(autoincrement()) @map("city_id")
+  name  String
+  tasks Task[]
+
   @@map("cities")
 }

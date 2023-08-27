@@ -8,14 +8,17 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
   public price?: number;
   public address?: string;
   public cityId: number;
-  public publishAt: Date;
+  public publishAt?: Date;
   public userId: string;
   public comments?: Comment[];
-  public categories: Category[];
+  public categories?: Category[];
   public tags?: Tag[];
   public dedline: Date;
   public image?: string;
-  public createdAt: Date;
+  public createdAt?: Date;
+  public status: string;
+  public usersResponsesId: string[];
+  public contractorId: string;
 
   constructor(post: Task) {
     this.fillEntity(post);
@@ -29,12 +32,15 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
     this.cityId = entity.cityId;
     this.publishAt = new Date();
     this.userId = entity.userId;
-    this.comments = [...entity.comments];
-    this.categories = [...entity.categories];
+    this.comments = [];
+    this.categories = entity.categories;
     this.tags = [];
     this.dedline = entity.dedline;
     this.image = entity.image;
     this.createdAt = new Date();
+    this.status = entity.status;
+    this.usersResponsesId = entity.usersResponsesId;
+    this.contractorId = entity.contractorId;
   }
 
   public toObject(): TaskPostEntity {

@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "message": "Проверка комментариев 3",
-  "userId": "1",
-  "taskId": 1
+  "userId": "64e9a1e9e6a8ab4093310cd7",
+  "taskId": 10
 }
 
 ###
@@ -16,7 +16,7 @@ DELETE http://localhost:3000/api/comments/3 HTTP/1.1
 ###
 
 # Get comment by id
-GET http://localhost:3000/api/comments/5 HTTP/1.1
+GET http://localhost:3000/api/comments/16 HTTP/1.1
 
 ###
 
@@ -26,7 +26,7 @@ GET http://localhost:3000/api/comments HTTP/1.1
 ###
 
 # Get all comments and filtres
-GET http://localhost:3000/api/comments?limit=2&page=3 HTTP/1.1
+GET http://localhost:3000/api/comments?limit=1&page=2 HTTP/1.1
 
 ###
 

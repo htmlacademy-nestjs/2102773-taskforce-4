@@ -31,7 +31,11 @@ export class TaskCommentRepository implements CRUDRepository<TaskCommentEntity, 
     });
   }
 
-  public find(query?: PostQuery): Promise<Comment[]> {
+  public find(): Promise<Comment[]> {
+    return this.prisma.comment.findMany();
+  }
+
+  public findAndFilter(query?: PostQuery): Promise<Comment[]> {
     return this.prisma.comment.findMany({
       take: query.limit,
       skip: query.page > 0 ? query.limit * (query.page - 1) : undefined,

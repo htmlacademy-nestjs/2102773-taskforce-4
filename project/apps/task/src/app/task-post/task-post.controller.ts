@@ -60,14 +60,27 @@ export class TaskPostController {
     this.taskPostService.deleteTask(id);
   }
 
+  // @ApiResponse({
+  //   type: TaskRdo,
+  //   status: HttpStatus.OK,
+  //   description: 'Task has been updeted.'
+  // })
+  // @Patch('/:id')
+  // async update(@Param('id') id: number, @Body() dto: UpdatePostDto, userId: string) {
+  //   const updatedTask = await this.taskPostService.updateTask(id, dto, userId);
+  //   return fillObject(TaskRdo, updatedTask)
+  // }
+
   @ApiResponse({
     type: TaskRdo,
     status: HttpStatus.OK,
     description: 'Task has been updeted.'
   })
+
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
-    const updatedTask = await this.taskPostService.updateTask(id, dto);
-    return fillObject(TaskRdo, updatedTask)
+  async changeStatus(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+    const changeStatusTask = await this.taskPostService.updateTask(id, dto);
+    const {status, usersResponsesId, contractorId} = changeStatusTask;
+    return fillObject(TaskRdo, {status, usersResponsesId, contractorId})
   }
 }

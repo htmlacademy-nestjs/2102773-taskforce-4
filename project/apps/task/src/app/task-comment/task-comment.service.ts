@@ -26,6 +26,6 @@ export class TaskCommentService {
   }
 
   async getComments(query: PostQuery): Promise<Comment[]> {
-    return this.taskCommentRepository.find(query);
+    return this.taskCommentRepository.findAndFilter(query);
   }
 }

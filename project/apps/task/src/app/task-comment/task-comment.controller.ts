@@ -31,8 +31,8 @@ export class TaskCommentController {
   })
   @Get('/')
   async index(@Query() query: PostQuery) {
-    const categories = await this.TaskCommentService.getComments(query);
-    return fillObject(CommentRto, categories);
+    const comments = await this.TaskCommentService.getComments(query);
+    return fillObject(CommentRto, comments);
   }
 
   @ApiResponse({
@@ -41,8 +41,8 @@ export class TaskCommentController {
   })
   @Post('/')
   async create(@Body() dto: CreateCommentDto) {
-    const newCategory = await this.TaskCommentService.createComment(dto);
-    return fillObject(CommentRto, newCategory);
+    const newComment = await this.TaskCommentService.createComment(dto);
+    return fillObject(CommentRto, newComment);
   }
 
   @ApiResponse({
