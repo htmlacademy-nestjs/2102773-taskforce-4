@@ -17,19 +17,19 @@ export class UsersController {
 
   @Post('register')
   public async register(@Body() createUserDto: CreateUserDto) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/register`, createUserDto);
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/register`, createUserDto);
     return data;
   }
 
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/login`, loginUserDto);
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/login`, loginUserDto);
     return data;
   }
 
   @Post('refresh')
   public async refreshToken(@Req() req: Request) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Users}/refresh`, null, {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/refresh`, null, {
       headers: {
         'Authorization': req.headers['authorization']
       }
@@ -40,7 +40,7 @@ export class UsersController {
   @UseGuards(CheckAuthGuard)
   @Patch('update')
   public async update(@Body() UpdateUserDto: UpdateUserDto, @Req() req: Request) {
-    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Users}/update`, UpdateUserDto, {
+    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update`, UpdateUserDto, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': req.headers['authorization']
@@ -52,7 +52,7 @@ export class UsersController {
   @UseGuards(CheckAuthGuard)
   @Patch('changePassword')
   public async changePassword(@Body() ChangePasswordDto: ChangePasswordDto, @Req() req: Request) {
-    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Users}/changePassword`, ChangePasswordDto, {
+    const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/changePassword`, ChangePasswordDto, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': req.headers['authorization']

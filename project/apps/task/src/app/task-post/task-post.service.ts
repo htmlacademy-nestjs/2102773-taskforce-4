@@ -34,11 +34,11 @@ export class TaskPostService {
     return this.taskPostRepository.find(query);
   }
 
-  async updateTask(id: number, dto: UpdatePostDto): Promise<Task> {
+  async updateTask(id: number, dto: UpdatePostDto, status): Promise<Task> {
     const categories = (await this.taskPostRepository.findById(id)).categories;
     const comments = (await this.taskPostRepository.findById(id)).comments;
     const userId = (await this.taskPostRepository.findById(id)).userId;
 
-    return this.taskPostRepository.update(id, new TaskPostEntity({...dto, categories, comments, userId}))
+    return this.taskPostRepository.update(id, new TaskPostEntity({...dto, status: status, categories, comments, userId}))
   }
 }

@@ -1,5 +1,6 @@
 export enum ApplicationServiceURL {
-  Users = 'http://localhost:3333/api/auth',
+  Auth = 'http://localhost:3333/api/auth',
+  User = 'http://localhost:3333/api/user',
   Task = 'http://localhost:3000/api/tasks',
   Comment = 'http://localhost:3000/api/comments',
 }

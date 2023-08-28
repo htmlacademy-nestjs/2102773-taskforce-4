@@ -48,4 +48,10 @@ export class AddNewTaskDto {
     example: '16.08.2023',
   })
   public dedline?: Date;
+
+  @ApiProperty({
+    description: 'Task user id',
+    example: '1',
+  })
+  public userId: string;
 }

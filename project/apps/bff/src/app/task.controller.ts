@@ -9,9 +9,10 @@ import { CheckAdminRoleGuard } from './guards/check-admin-role.guard';
 import { AddNewCommentDto } from './dto/add-new-comment.dto';
 import { PostQuery } from './query/post.query';
 import { CheckUserGuard } from './guards/check-user.guard';
-import { makeUniq } from '@project/util/util-core';
+import { fillObject, makeUniq } from '@project/util/util-core';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
-import { TaskStatus } from '@project/shared/app-types';
+import { TaskStatus, UserRole } from '@project/shared/app-types';
+import { TaskRdo } from './rdo/task.rdo';
 
 @Controller('task')
 @UseFilters(AxiosExceptionFilter)
@@ -24,8 +25,9 @@ export class TaskController {
   @UseInterceptors(UseridInterceptor)
   @Post('/')
   public async create(@Body() dto: AddNewTaskDto) {
+    const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.User}/${dto.userId}`)).data
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Task}/`, dto);
-    return data;
+    return fillObject(TaskRdo, {...data, user: user});
   }
 
   @UseGuards(CheckAuthGuard)
@@ -51,22 +53,37 @@ export class TaskController {
 
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @UseInterceptors(UseridInterceptor)
-  @Patch('/:id')
-  public async addResponse(@Param('id') id: number, @Body() userId: string) {
-    const task = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${id}`);
+  @Patch('response/:id')
+  public async addResponse(@Param('id') id: number, @Body() {userId}) {
+    const task = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${id}`)).data;
 
-    if (task.data.status !== TaskStatus.New) {
+    if (task.status !== TaskStatus.New) {
       throw new NotFoundException(`Только на новые задачи можно откликаться`);
     }
-
-    const usersResponsesId: string[] = task.data.usersResponsesId;
-    usersResponsesId.push(...Object.values(userId))
+    const usersResponsesId = task.usersResponsesId;
 
     const { data } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Task}/${id}`,
-      { usersResponsesId: makeUniq(usersResponsesId) }
+      { usersResponsesId: makeUniq([...usersResponsesId, userId]) }
       );
       return data;
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UseridInterceptor)
+  @Patch('status/:id')
+  public async changeStatus(@Param('id') id: number, @Body() {userId}, @Query() {status}) {
+    const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.User}/${userId}`)).data
+
+    if (user.role === UserRole.Admin && status === TaskStatus.Canceled) {
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`);
+      return data
+    }
+
+    if (user.role === UserRole.User) {
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`);
+      return data
+    }
   }
 
 }

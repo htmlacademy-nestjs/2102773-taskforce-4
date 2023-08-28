@@ -78,9 +78,9 @@ export class TaskPostController {
   })
 
   @Patch('/:id')
-  async changeStatus(@Param('id') id: number, @Body() dto: UpdatePostDto) {
-    const changeStatusTask = await this.taskPostService.updateTask(id, dto);
-    const {status, usersResponsesId, contractorId} = changeStatusTask;
-    return fillObject(TaskRdo, {status, usersResponsesId, contractorId})
+  async changeStatus(@Param('id') id: number, @Body() dto: UpdatePostDto, @Query() {status}) {
+    await this.taskPostService.updateTask(id, dto, status);
+    //const {status, usersResponsesId, contractorId} = changeStatusTask;
+    return fillObject(TaskRdo, {status})
   }
 }
