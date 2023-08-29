@@ -33,7 +33,7 @@ GET http://localhost:3000/api/tasks HTTP/1.1
 ###
 
 # Get all tasks and filtres
-GET http://localhost:3000/api/tasks?sortDirection=desc&categories=1&city=1,3&limit=5&page=1 HTTP/1.1
+GET http://localhost:3000/api/tasks?sortDirection=desc&status=Выполнено&contractorId=3&limit=5&page=1 HTTP/1.1
 
 ###
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { TaskPostRepository } from './task-post.repository';
 import { TaskCategoryRepository } from '../task-category/task-category.repository';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -34,11 +34,14 @@ export class TaskPostService {
     return this.taskPostRepository.find(query);
   }
 
-  async updateTask(id: number, dto: UpdatePostDto, status): Promise<Task> {
+  async updateTask(id: number, dto: UpdatePostDto, status: TaskStatus): Promise<Task> {
     const categories = (await this.taskPostRepository.findById(id)).categories;
     const comments = (await this.taskPostRepository.findById(id)).comments;
     const userId = (await this.taskPostRepository.findById(id)).userId;
 
+    if (!status) {
+      throw new ForbiddenException('Пользователь с этой ролью не может присвоить этот статус');
+    }
     return this.taskPostRepository.update(id, new TaskPostEntity({...dto, status: status, categories, comments, userId}))
   }
 }

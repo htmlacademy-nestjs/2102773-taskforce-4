@@ -29,4 +29,10 @@ export class PostQuery {
   @Transform(({ value }) => +value)
   @IsOptional()
   public page: number;
+
+  @IsOptional()
+  public contractorId: string;
+
+  @IsOptional()
+  public status: string;
 }

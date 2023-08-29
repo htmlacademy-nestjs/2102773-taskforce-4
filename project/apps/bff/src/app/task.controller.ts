@@ -11,8 +11,9 @@ import { PostQuery } from './query/post.query';
 import { CheckUserGuard } from './guards/check-user.guard';
 import { fillObject, makeUniq } from '@project/util/util-core';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
-import { TaskStatus, UserRole } from '@project/shared/app-types';
+import { TaskStatus } from '@project/shared/app-types';
 import { TaskRdo } from './rdo/task.rdo';
+import { UserStatusInterceptor } from './interceptors/user-status.interceptor';
 
 @Controller('task')
 @UseFilters(AxiosExceptionFilter)
@@ -70,20 +71,23 @@ export class TaskController {
   }
 
   @UseGuards(CheckAuthGuard)
-  @UseInterceptors(UseridInterceptor)
+  @UseInterceptors(UseridInterceptor, UserStatusInterceptor)
   @Patch('status/:id')
-  public async changeStatus(@Param('id') id: number, @Body() {userId}, @Query() {status}) {
-    const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.User}/${userId}`)).data
-
-    if (user.role === UserRole.Admin && status === TaskStatus.Canceled) {
-      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`);
+  public async changeStatus(@Param('id') id: number, @Body() {newStatus, contractorId}, @Query() {status}) {
+    if (newStatus === TaskStatus.Work) {
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus, contractorId: contractorId});
       return data
     }
 
-    if (user.role === UserRole.User) {
-      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`);
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus});
       return data
-    }
   }
 
+  @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
+  @UseInterceptors(UseridInterceptor)
+  @Delete('/:id')
+  public async deleteTask(@Param('id') id: number) {
+    const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Task}/${id}`);
+    return data;
+  }
 }
