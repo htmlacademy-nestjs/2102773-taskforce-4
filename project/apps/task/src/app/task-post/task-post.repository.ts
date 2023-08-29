@@ -56,7 +56,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public find({limit, categories, city, sortDirection, page}: PostQuery): Promise<Task[]> {
+  public find({limit, categories, city, contractorId, status, sortDirection, page}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         categories: {
@@ -68,7 +68,9 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         },
          city: {
           id: {in: city}
-        }
+        },
+        status: status,
+        contractorId: contractorId,
       },
       take: limit,
       include: {
@@ -84,7 +86,32 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public update(_id: number, _item: TaskPostEntity): Promise<Task> {
-    return Promise.resolve(undefined);
+  public update(taskId: number, item: TaskPostEntity): Promise<Task> {
+    return this.prisma.task.update({
+      where: {
+        taskId,
+        },
+      data: {
+        ...item.toObject(),
+        comments: {
+          connect: item.toObject().comments
+          .map(({ commentId }) => ({ commentId }))
+        },
+        categories: {
+          connect: item.toObject().categories
+            .map(({ categoryId }) => ({ categoryId }))
+        },
+        tags: {
+          connect: item.toObject().tags.map(({ tagId }) => ({ tagId }))
+        }
+      },
+      include: {
+        comments: true,
+        categories: true,
+        tags: true,
+        city: true,
+      }
+    });
+
   }
 }

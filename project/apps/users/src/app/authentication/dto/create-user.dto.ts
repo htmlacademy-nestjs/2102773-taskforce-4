@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserCity, UserRole } from "@project/shared/app-types";
-import { ArrayMaxSize, IsEmail, IsEnum, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
+import { ArrayMaxSize, IsEmail, IsEnum, IsOptional, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
 import { AuthUserError } from "../authentication.constant";
 import dayjs from "dayjs";
 import { Transform } from "class-transformer";
@@ -62,13 +62,15 @@ export class CreateUserDto {
     description: 'Personal information',
     example: 'Женат'
   })
+  @IsOptional()
   @MaxLength(300, {message: AuthUserError.MaxPersInfoLength})
-  public personalInfo: string;
+  public personalInfo?: string;
 
   @ApiProperty({
     description: 'Specialization',
     example: 'электрик'
   })
-  @ArrayMaxSize(5)
-  public specialization: string[];
+  @IsOptional()
+  @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
+  public specialization?: string[];
 }

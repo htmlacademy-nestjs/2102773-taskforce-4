@@ -5,6 +5,7 @@ import { CRUDRepository } from "@project/util/util-types";
 import { Model } from "mongoose";
 import { TaskUserEntity } from "./task-user.entity";
 import { TaskUserModel } from "./task-user.model";
+import { UpdateUserDto } from "../authentication/dto/update-user.dto";
 
 @Injectable()
 export class TaskUserRepository implements CRUDRepository<TaskUserEntity, string, User> {
@@ -33,9 +34,9 @@ export class TaskUserRepository implements CRUDRepository<TaskUserEntity, string
       .exec();
   }
 
-  public async update(id: string, item: TaskUserEntity): Promise<User> {
+  public async update(id: string, dto: UpdateUserDto): Promise<User> {
     return this.taskUserModel
-      .findByIdAndUpdate(id, item.toObject(), { new: true })
+      .findByIdAndUpdate(id, dto, { new: true })
       .exec();
   }
 }
