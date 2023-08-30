@@ -58,4 +58,10 @@ export class UserRdo {
   })
   @Expose()
   public specialization: string[];
+
+  @Expose()
+  public doneTaskId: number[];
+
+  @Expose()
+  public failedTaskId: number[];
 }

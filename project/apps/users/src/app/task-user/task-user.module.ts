@@ -11,6 +11,6 @@ import { UserController } from './task-user.controller';
   ])],
   controllers: [UserController],
   providers: [TaskUserRepository, TaskUserService],
-  exports: [TaskUserRepository]
+  exports: [TaskUserRepository, TaskUserService]
 })
 export class TaskUserModule {}

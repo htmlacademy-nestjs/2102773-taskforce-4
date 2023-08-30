@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
@@ -11,7 +11,7 @@ import { PostQuery } from './query/post.query';
 import { CheckUserGuard } from './guards/check-user.guard';
 import { fillObject, makeUniq } from '@project/util/util-core';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
-import { TaskStatus } from '@project/shared/app-types';
+import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
 import { TaskRdo } from './rdo/task.rdo';
 import { UserStatusInterceptor } from './interceptors/user-status.interceptor';
 
@@ -73,10 +73,37 @@ export class TaskController {
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UseridInterceptor, UserStatusInterceptor)
   @Patch('status/:id')
-  public async changeStatus(@Param('id') id: number, @Body() {newStatus, contractorId}, @Query() {status}) {
+  public async changeStatus(@Param('id') id: number, @Body() {newStatus, contractorId},
+  @Query() {status}, @Req() req: Request, @Req() { user: payload }: RequestWithTokenPayload) {
+
+    const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Auth}/${payload.sub}`, {
+      headers: {
+        'Authorization': req.headers['authorization']
+      }
+    })).data;
+
+    const doneTasksId = user.doneTaskId;
+    const failedTasksId = user.failedTaskId;
+
     if (newStatus === TaskStatus.Work) {
       const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus, contractorId: contractorId});
       return data
+    }
+
+    if (newStatus === TaskStatus.Done) {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {doneTaskId: [...doneTasksId, id]}, {
+        headers: {
+          'Authorization': req.headers['authorization']
+        }
+      })
+    }
+
+    if (newStatus === TaskStatus.Failed) {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {failedTaskId: [...failedTasksId, id]}, {
+        headers: {
+          'Authorization': req.headers['authorization']
+        }
+      })
     }
 
       const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus});

@@ -13,4 +13,10 @@ export interface User {
   city: UserCity;
   personalInfo?: string;
   specialization?: string[];
+  failedTaskId?: number[];
+  doneTaskId?: number[];
+  newTaskCount?: number;
+  publicTaskCount?: number;
+  rating?: number;
+  ratingPlace?: number;
 }

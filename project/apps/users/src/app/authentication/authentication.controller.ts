@@ -83,17 +83,17 @@ export class AuthenticationController {
     return payload;
   }
 
-
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user has been updated.'
   })
   @UseGuards(JwtAuthGuard)
-  @Patch('update')
-  public async update(@Body() dto: UpdateUserDto, @Req() { user: payload }: RequestWithTokenPayload) {
-    const updateUser = await this.authService.updateUser(payload.sub, dto);
+  @Patch('update/:id')
+  public async update(@Body() dto: UpdateUserDto, @Param('id', MongoidValidationPipe) id: string) {
+    const updateUser = await this.authService.updateUser(id, {...dto});
     return fillObject(UserRdo, updateUser);
   }
+
 
   @UseGuards(JwtAuthGuard)
   @Patch('changePassword')

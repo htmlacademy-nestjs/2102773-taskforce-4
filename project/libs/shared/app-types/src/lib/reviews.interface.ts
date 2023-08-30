@@ -1,8 +1,10 @@
+import { Types } from "mongoose";
+
 export interface Review {
-  id?: number;
-  createdAt: Date;
+  reviewId?: number;
+  createdAt?: Date;
   taskId?: number;
   message: string;
-  userId: string;
+  userId: Types.ObjectId;
   rating: number;
 }
