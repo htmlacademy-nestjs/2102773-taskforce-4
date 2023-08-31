@@ -91,7 +91,7 @@ export class TaskController {
     }
 
     if (newStatus === TaskStatus.Done) {
-      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {doneTaskId: [...doneTasksId, id]}, {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {doneTaskId: [...doneTasksId, id], doneTaskCount: doneTasksId.length}, {
         headers: {
           'Authorization': req.headers['authorization']
         }
@@ -99,7 +99,7 @@ export class TaskController {
     }
 
     if (newStatus === TaskStatus.Failed) {
-      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {failedTaskId: [...failedTasksId, id]}, {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {failedTaskId: [...failedTasksId, id], failedTaskCount: failedTasksId.length}, {
         headers: {
           'Authorization': req.headers['authorization']
         }

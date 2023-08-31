@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "email": "user@notfound.local",
-  "password": "123456"
+  "password": "1234567"
 }
 
 ###
@@ -39,8 +39,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU4ZTMwN
 ###
 
 # Get user by ID
-GET http://localhost:3333/api/auth/64e8e304f374a73c4c0840e8 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU4ZTMwNGYzNzRhNzNjNGMwODQwZTgiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoiY29udHJhY3RvciIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzMiIsImlhdCI6MTY5Mjk4NTY0MiwiZXhwIjoxNjkyOTg2MjQyfQ.XLCs0yAq8R7aMbZT8lqMYGkmhME2_fPNgZNK7QK0rac
+GET http://localhost:3333/api/auth/64f0788c837e91ce931a310b HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg0IiwiZmlyc3RuYW1lIjoiS2VrczciLCJpYXQiOjE2OTM0OTYwNTEsImV4cCI6MTY5MzQ5NjY1MX0.7_EarzyncaH4MgkwGbUaXM4UxnKe4OsWOIJP5g1K9Gc
 ###
 
 

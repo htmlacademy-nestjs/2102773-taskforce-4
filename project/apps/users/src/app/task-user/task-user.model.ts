@@ -65,7 +65,16 @@ export class TaskUserModel extends Document implements User {
   public doneTaskId: number[];
 
   @Prop()
+  public failedTaskCount: number;
+
+  @Prop()
+  public doneTaskCount: number;
+
+  @Prop()
   public newTaskCount: number;
+
+  @Prop()
+  public taskCount: number;
 
   @Prop()
   public publicTaskCount: number;

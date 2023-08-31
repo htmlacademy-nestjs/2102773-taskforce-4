@@ -15,7 +15,10 @@ export interface User {
   specialization?: string[];
   failedTaskId?: number[];
   doneTaskId?: number[];
+  failedTaskCount?: number;
+  doneTaskCount?: number;
   newTaskCount?: number;
+  taskCount?: number;
   publicTaskCount?: number;
   rating?: number;
   ratingPlace?: number;

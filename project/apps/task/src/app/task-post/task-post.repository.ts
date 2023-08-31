@@ -56,7 +56,22 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public find({limit, categories, city, contractorId, status, sortDirection, page}: PostQuery): Promise<Task[]> {
+  public async findByUserId(userId: string, status: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        userId: userId,
+        status: status,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        tags: true,
+        city: true,
+      }
+    });
+  }
+
+  public find({limit, categories, city, contractorId, status, sortDirection, page, userId}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         categories: {
@@ -71,6 +86,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         },
         status: status,
         contractorId: contractorId,
+        userId: userId,
       },
       take: limit,
       include: {

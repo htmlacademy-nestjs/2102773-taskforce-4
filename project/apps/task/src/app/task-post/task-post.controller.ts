@@ -39,6 +39,18 @@ export class TaskPostController {
   }
 
   @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by user found'
+  })
+  @Get('user/:id')
+  async showTaskByUser(@Param('id') userId: string, @Query() {status}: PostQuery) {
+    console.log(status)
+    const posts = await this.taskPostService.getTasksByUserId(userId, status);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new task has been successfully created.'
   })

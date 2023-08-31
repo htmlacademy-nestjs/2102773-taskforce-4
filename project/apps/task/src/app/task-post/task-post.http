@@ -33,7 +33,12 @@ GET http://localhost:3000/api/tasks HTTP/1.1
 ###
 
 # Get all tasks and filtres
-GET http://localhost:3000/api/tasks?sortDirection=desc&status=Выполнено&contractorId=3&limit=5&page=1 HTTP/1.1
+GET http://localhost:3000/api/tasks?sortDirection=desc&userId=64e9a20de6a8ab4093310cdb&status=Выполнено&page=1 HTTP/1.1
+
+###
+
+# Get all tasks and filtres
+GET http://localhost:3000/api/tasks/user/64f06dc90c04c69aa6115371?status=Новое HTTP/1.1
 
 ###
 
@@ -51,7 +56,7 @@ Content-Type: application/json
 ###
 
 # Change status of Task by id
-PATCH http://localhost:3000/api/tasks/15?status=Отменено HTTP/1.1
+PATCH http://localhost:3000/api/tasks/56?status=Провалено HTTP/1.1
 Content-Type: application/json
 
 ###

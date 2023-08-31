@@ -54,4 +54,5 @@ export class UpdateUserDto {
   @IsOptional()
   @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
   public specialization?: string[];
+
 }

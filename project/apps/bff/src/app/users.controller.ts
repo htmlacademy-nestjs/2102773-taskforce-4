@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { RequestWithTokenPayload } from '@project/shared/app-types';
+import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
 import { UserRdo } from './rdo/user.rdo';
 import { fillObject } from '@project/util/util-core';
 
@@ -65,9 +65,21 @@ export class UsersController {
   }
 
   @UseGuards(CheckAuthGuard)
-  @Get('/:id')
-  public async show(@Param('id') id: number, @Req() req: Request) {
-    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Auth}/${id}`, {
+  @Get('/:userId')
+  public async show(@Param('userId') userId: string, @Req() req: Request) {
+    const taskCount = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/user/${userId}`)).data
+    const newTaskCount = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/user/${userId}?status=${TaskStatus.New}`)).data
+
+    console.log(taskCount.length)
+    console.log(newTaskCount.length)
+
+    await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${userId}`, {newTaskCount: newTaskCount.length, taskCount: taskCount.length}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': req.headers['authorization']
+      }
+    });
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Auth}/${userId}`, {
       headers: {
         'Authorization': req.headers['authorization']
       }

@@ -18,6 +18,12 @@ export class TaskUserService {
     return this.taskUserRepository.findById(id);
   }
 
+  public async calculateRatingPlace(id: string): Promise<User> {
+    const result = (await this.taskUserRepository.find(id))
+    .findIndex(({_id}) => _id.toString() === id)
+    return await this.taskUserModel.findByIdAndUpdate(id, {ratingPlace: result + 1}, {new: true}).exec();
+  }
+
   public async calculateRating(id: Types.ObjectId): Promise<User> {
 
     const result = await this.taskUserModel
@@ -39,8 +45,6 @@ export class TaskUserService {
         },
     ])
    .exec();
-
-   console.log(result)
 
     if (result.length === 0) {
       return null;

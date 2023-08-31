@@ -17,9 +17,12 @@ export class TaskUserEntity implements User {
   public failedTaskId: number[];
   public doneTaskId: number[];
   public newTaskCount: number;
+  public taskCount: number;
   public publicTaskCount: number;
   public rating: number;
   public ratingPlace: number;
+  public failedTaskCount: number;
+  public doneTaskCount: number;
 
 
   constructor(taskUser: User) {
@@ -41,7 +44,10 @@ export class TaskUserEntity implements User {
       specialization: this.specialization,
       failedTaskId: this.failedTaskId,
       doneTaskId: this.doneTaskId,
+      failedTaskCount: this.failedTaskCount,
+      doneTaskCount: this.doneTaskCount,
       newTaskCount: this.newTaskCount,
+      taskCount: this.taskCount,
       rating: this.rating,
       ratingPlace: this.ratingPlace,
     };
@@ -64,6 +70,7 @@ export class TaskUserEntity implements User {
     this.newTaskCount = taskUser.newTaskCount;
     this.rating = taskUser.rating;
     this.ratingPlace = taskUser.ratingPlace;
+    this.taskCount = taskUser.taskCount;
   }
 
   public async setPassword(password: string): Promise<TaskUserEntity> {

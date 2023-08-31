@@ -35,4 +35,7 @@ export class PostQuery {
 
   @IsOptional()
   public status: string;
+
+  @IsOptional()
+  public userId: string;
 }

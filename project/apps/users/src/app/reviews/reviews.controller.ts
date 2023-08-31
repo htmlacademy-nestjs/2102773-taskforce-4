@@ -31,8 +31,8 @@ export class ReviewController {
   })
   @Post('/')
   public async create(@Body() dto: NewReviewDto) {
-    await this.userService.calculateRating(dto.userId)
     const newReview = await this.reviewService.createReview(dto);
+    await this.userService.calculateRating(dto.userId)
     return fillObject(ReviewRdo, newReview);
   }
 }

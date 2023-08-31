@@ -13,12 +13,17 @@ import { LocalAuthGuard } from './guards/local-auth-guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { TaskUserService } from '../task-user/task-user.service';
+import mongoose from 'mongoose';
+
+const ObjectId = mongoose.Types.ObjectId;
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
     private readonly authService: AuthenticationService,
+    private readonly userService: TaskUserService,
   ) {}
 
   @ApiResponse({
@@ -58,6 +63,7 @@ export class AuthenticationController {
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
+    await this.userService.calculateRatingPlace(id)
     if (existUser.role === UserRole.Admin) {
       return fillObject(AdminUserRdo, existUser);
     }
@@ -91,6 +97,7 @@ export class AuthenticationController {
   @Patch('update/:id')
   public async update(@Body() dto: UpdateUserDto, @Param('id', MongoidValidationPipe) id: string) {
     const updateUser = await this.authService.updateUser(id, {...dto});
+    await this.userService.calculateRating(new ObjectId(id))
     return fillObject(UserRdo, updateUser);
   }
 
