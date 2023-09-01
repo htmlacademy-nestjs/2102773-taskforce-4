@@ -45,7 +45,6 @@ export class TaskPostController {
   })
   @Get('user/:id')
   async showTaskByUser(@Param('id') userId: string, @Query() {status}: PostQuery) {
-    console.log(status)
     const posts = await this.taskPostService.getTasksByUserId(userId, status);
     return fillObject(TaskRdo, posts);
   }

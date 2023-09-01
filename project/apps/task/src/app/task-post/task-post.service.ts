@@ -7,6 +7,7 @@ import { TaskPostEntity } from './task-post.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
 import { TaskCommentRepository } from '../task-comment/task-comment.repository';
+import { makeUniq } from '@project/util/util-core';
 
 @Injectable()
 export class TaskPostService {
@@ -18,7 +19,7 @@ export class TaskPostService {
 
   async createTask(dto: CreatePostDto): Promise<Task> {
     const categories = await this.taskCategoryRepository.find(dto.categories);
-    const postEntity = new TaskPostEntity({ ...dto, categories, tags: [], status: TaskStatus.New });
+    const postEntity = new TaskPostEntity({ ...dto, tags: makeUniq(dto.tags), categories, status: TaskStatus.New });
     return this.taskPostRepository.create(postEntity);
   }
 
