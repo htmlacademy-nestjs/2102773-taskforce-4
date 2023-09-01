@@ -5,6 +5,7 @@ import { Task } from '@project/shared/app-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { PostQuery } from './query/post.query';
 
+
 @Injectable()
 export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number, Task> {
   constructor(private readonly prisma: PrismaService) {}
@@ -65,7 +66,7 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
     });
   }
 
-  public find({limit, categories, city, contractorId, status, sortDirection, page, userId}: PostQuery): Promise<Task[]> {
+  public find({limit, categories, city, contractorId, status, sortDirection, page, userId, tag}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         categories: {
@@ -75,12 +76,13 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
             }
           }
         },
-         city: {
+        city: {
           id: {in: city}
         },
         status: status,
         contractorId: contractorId,
         userId: userId,
+        tags: tag !== undefined ? {hasEvery: tag}: undefined,
       },
       take: limit,
       include: {

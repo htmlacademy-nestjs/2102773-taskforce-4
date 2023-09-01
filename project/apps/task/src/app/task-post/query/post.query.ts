@@ -13,10 +13,10 @@ export class PostQuery {
   @IsOptional()
   public categories?: number[];
 
-  @Transform(({ value }) => value.split(',').map((tagId) => +tagId))
-  @IsArray({})
   @IsOptional()
-  public tags?: number[];
+  @Transform(({ value }) => value.split(',').map((tag) => tag))
+  @IsArray({})
+  public tag?: string[];
 
   @Transform(({ value }) => value.split(',').map((id) => +id))
   @IsOptional()
