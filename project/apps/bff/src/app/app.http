@@ -3,13 +3,13 @@ POST http://localhost:4000/api/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user3@notfound.local",
-  "dateBirth": "2004-09-22",
-  "firstname": "Keks3",
-  "lastname": "Smith3",
+  "email": "user4@notfound.local",
+  "dateBirth": "1988-03-12",
+  "firstname": "Keks4",
+  "lastname": "Smith4",
   "password": "123456",
-  "city": "Владивосток",
-  "role": "Исполнитель"
+  "city": "Санкт-Петербург",
+  "role": "Заказчик"
 }
 
 ###
@@ -33,12 +33,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwN
 
 # Upload avatar for user by id
 POST http://localhost:4000/api/users/avatar HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM3MzkxMjcsImV4cCI6MTY5MzczOTcyN30.qRIBdoPT-cAexEY3Nz6K-nuNsBQ6erQc85I7DCv0Kbg
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="пароль почта.txt"
+Content-Disposition: form-data; name="file"; filename="Визуализация.png"
 
-< C:\Users\gerbe\Documents\пароль почта.txt
+< C:\Users\gerbe\Pictures\Визуализация.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
@@ -67,9 +68,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwN
 ###
 
 # Get user by id
-GET http://localhost:4000/api/users/64f3854e1e458ccd0a1ff61e HTTP/1.1
+GET http://localhost:4000/api/users/64f471ff9d4542f4028081fd HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM2ODkzMTYsImV4cCI6MTY5MzY4OTkxNn0.K-8vycz8R0xx0rA2jmCr7DoiAWgqKR3GKqnRw04fNiw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM3NDEzOTEsImV4cCI6MTY5Mzc0MTk5MX0.EWlIT7wtLrg4gN5moufh6c8Mbznv32z_Z9yztM-9qVI
 
 ###
 

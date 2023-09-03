@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
+import dayjs from 'dayjs';
 
 export class UserRdo {
   @ApiProperty({
@@ -71,4 +72,11 @@ export class UserRdo {
   })
   @Expose()
   public avatar: string;
+
+  @Expose({ name: 'createdAt'})
+  public registerDate: Date;
+
+  @Expose({ name: 'dateBirth'})
+  @Transform(({ value }) => dayjs().diff(dayjs(value), 'year'))
+  public age: number;
 }

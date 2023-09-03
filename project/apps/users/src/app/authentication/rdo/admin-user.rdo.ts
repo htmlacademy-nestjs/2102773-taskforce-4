@@ -67,4 +67,11 @@ export class AdminUserRdo {
   })
   @Expose()
   public personalInfo: string;
+
+  @Expose({ name: 'createdAt'})
+  public registerDate: Date;
+
+  @Expose({ name: 'dateBirth'})
+  @Transform(({ value }) => dayjs().diff(dayjs(value), 'year'))
+  public age: number;
 }

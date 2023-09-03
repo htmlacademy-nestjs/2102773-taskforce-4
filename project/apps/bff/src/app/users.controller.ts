@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Get, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -32,16 +32,33 @@ export class UsersController {
     return data;
   }
 
+  @UseGuards(CheckAuthGuard)
   @Post('avatar')
   @UseInterceptors(FileInterceptor('file'))
-  public async avatarUpload(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
-    console.log(req.headers)
-    console.log(file)
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Upload}/upload`, file, {
-      headers: {
-        'Content-Type': req.headers['content-type'],
-      }
-    });
+  public async avatarUpload(@UploadedFile() file: Express.Multer.File,
+  @Req() { user: payload }: RequestWithTokenPayload, @Req() req: Request) {
+
+
+    if (file.size > 500000) {
+      throw new BadRequestException('Размер файла превышает допустимый');
+    }
+
+    let FormData = require('form-data');
+    const formData = new FormData();
+    formData.append('file', file.buffer, { filename: file.originalname });
+    const headers = {
+      ...formData.getHeaders(),
+      'Content-Length': formData.getLengthSync(),
+    };
+
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Upload}/upload`, formData, { headers });
+
+    await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {avatar: data.path}, {
+        headers: {
+          'Authorization': req.headers['authorization']
+        }
+      });
+
     return data;
   }
 
