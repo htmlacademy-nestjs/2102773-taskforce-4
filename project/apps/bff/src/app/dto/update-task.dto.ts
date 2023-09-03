@@ -3,7 +3,7 @@ import { IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { TaskStatus } from "@project/shared/app-types";
 
-export class UpdatePostDto {
+export class UpdateTaskDto {
   @ApiProperty({
     description: 'Task title',
     example: 'Решить задачу',

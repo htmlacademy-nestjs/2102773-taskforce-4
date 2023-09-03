@@ -60,11 +60,13 @@ export class UserRdo {
   @Expose()
   public specialization: string[];
 
-  @Expose()
-  public doneTaskId: number[];
+  @Expose({ name: 'doneTaskId'})
+  @Transform(({ value }) => value.length)
+  public doneTaskCount: number;
 
-  @Expose()
-  public failedTaskId: number[];
+  @Expose({ name: 'failedTaskId'})
+  @Transform(({ value }) => value.length)
+  public failedTaskCount: number;
 
   @ApiProperty({
     description: 'User avatar',
@@ -73,10 +75,32 @@ export class UserRdo {
   @Expose()
   public avatar: string;
 
+  @ApiProperty({
+    description: 'Register date (ISO format)',
+    example: '03.09.2023'
+  })
   @Expose({ name: 'createdAt'})
   public registerDate: Date;
 
+  @ApiProperty({
+    description: 'User age',
+    example: 25
+  })
   @Expose({ name: 'dateBirth'})
   @Transform(({ value }) => dayjs().diff(dayjs(value), 'year'))
   public age: number;
+
+  @ApiProperty({
+    description: 'User rating',
+    example: 5
+  })
+  @Expose()
+  public rating: number;
+
+  @ApiProperty({
+    description: 'User rating place',
+    example: 2
+  })
+  @Expose()
+  public ratingPlace: number;
 }

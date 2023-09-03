@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, Patch, Post, Query, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
@@ -14,6 +14,9 @@ import { CheckUserRoleGuard } from './guards/check-user-role.guard';
 import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
 import { TaskRdo } from './rdo/task.rdo';
 import { UserStatusInterceptor } from './interceptors/user-status.interceptor';
+import { FileInterceptor } from '@nestjs/platform-express';
+import FormData from 'form-data';
+import { UserRdo } from './rdo/user.rdo';
 
 @Controller('task')
 @UseFilters(AxiosExceptionFilter)
@@ -52,6 +55,21 @@ export class TaskController {
     return data;
   }
 
+  @Get('/:taskId')
+  public async showTask(@Param('taskId') taskId: number, @Req() req: Request) {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${taskId}`);
+
+    const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Auth}/${data.userId}`, {
+      headers: {
+        'Authorization': req.headers['authorization']
+      }
+    })).data;
+
+    console.log(data)
+
+    return fillObject(TaskRdo, {...data, user: fillObject(UserRdo, user)});
+  }
+
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @UseInterceptors(UseridInterceptor)
   @Patch('response/:id')
@@ -74,7 +92,7 @@ export class TaskController {
   @UseInterceptors(UseridInterceptor, UserStatusInterceptor)
   @Patch('status/:id')
   public async changeStatus(@Param('id') id: number, @Body() {newStatus, contractorId},
-  @Query() {status}, @Req() req: Request, @Req() { user: payload }: RequestWithTokenPayload) {
+  @Req() req: Request, @Req() { user: payload }: RequestWithTokenPayload) {
 
     const user = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Auth}/${payload.sub}`, {
       headers: {
@@ -82,31 +100,41 @@ export class TaskController {
       }
     })).data;
 
+    const task = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${id}`)).data;
+
     const doneTasksId = user.doneTaskId;
     const failedTasksId = user.failedTaskId;
 
+      if (!newStatus) {
+      throw new ForbiddenException('Пользователь с этой ролью не может присвоить этот статус');
+    }
+
+    if (!task.usersResponsesId.includes(contractorId)) {
+      throw new NotFoundException('contractorId not found ');
+    }
+
     if (newStatus === TaskStatus.Work) {
-      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus, contractorId: contractorId});
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}`, {status: newStatus, contractorId: contractorId});
       return data
     }
 
-    if (newStatus === TaskStatus.Done) {
-      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {doneTaskId: [...doneTasksId, id], doneTaskCount: doneTasksId.length}, {
+    if (newStatus === TaskStatus.Done && doneTasksId) {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {doneTaskId: [...doneTasksId, id]}, {
         headers: {
           'Authorization': req.headers['authorization']
         }
       })
     }
 
-    if (newStatus === TaskStatus.Failed) {
-      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {failedTaskId: [...failedTasksId, id], failedTaskCount: failedTasksId.length}, {
+    if (newStatus === TaskStatus.Failed && failedTasksId) {
+      await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Auth}/update/${payload.sub}`, {failedTaskId: [...failedTasksId, id]}, {
         headers: {
           'Authorization': req.headers['authorization']
         }
       })
     }
 
-      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}?status=${status}`, {status: newStatus});
+      const { data } = await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}`, {status: newStatus});
       return data
   }
 
@@ -115,6 +143,35 @@ export class TaskController {
   @Delete('/:id')
   public async deleteTask(@Param('id') id: number) {
     const { data } = await this.httpService.axiosRef.delete(`${ApplicationServiceURL.Task}/${id}`);
+    return data;
+  }
+
+  @UseGuards(CheckAuthGuard)
+  @Post('image/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  public async avatarUpload(@UploadedFile() file: Express.Multer.File,
+  @Req() req: Request, @Param('id') id: number) {
+
+
+    if (file.size > 1000000) {
+      throw new BadRequestException('Размер файла превышает допустимый');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file.buffer, { filename: file.originalname });
+    const headers = {
+      ...formData.getHeaders(),
+      'Content-Length': formData.getLengthSync(),
+    };
+
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Upload}/upload`, formData, { headers });
+
+    await this.httpService.axiosRef.patch(`${ApplicationServiceURL.Task}/${id}`, {image: data.path}, {
+        headers: {
+          'Authorization': req.headers['authorization']
+        }
+      });
+
     return data;
   }
 }

@@ -8,10 +8,11 @@ import { CheckAuthGuard } from './guards/check-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
-import { UserRdo } from './rdo/user.rdo';
-import { fillObject } from '@project/util/util-core';
 import 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
+import FormData from 'form-data';
+import { CheckAdminRoleGuard } from './guards/check-admin-role.guard';
+import { NewReviewDto } from './dto/new-review.dto';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -43,7 +44,6 @@ export class UsersController {
       throw new BadRequestException('Размер файла превышает допустимый');
     }
 
-    let FormData = require('form-data');
     const formData = new FormData();
     formData.append('file', file.buffer, { filename: file.originalname });
     const headers = {
@@ -81,7 +81,7 @@ export class UsersController {
       }
     });
 
-    return fillObject(UserRdo, data);
+    return data;
   }
 
   @UseGuards(CheckAuthGuard)
@@ -113,6 +113,13 @@ export class UsersController {
         'Authorization': req.headers['authorization']
       }
     });
+    return data;
+  }
+
+  @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
+  @Post('/review')
+  public async createReview(@Body() dto: NewReviewDto) {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Review}`, dto);
     return data;
   }
 }

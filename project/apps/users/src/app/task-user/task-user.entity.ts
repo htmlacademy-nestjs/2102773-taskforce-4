@@ -21,9 +21,6 @@ export class TaskUserEntity implements User {
   public publicTaskCount: number;
   public rating: number;
   public ratingPlace: number;
-  public failedTaskCount: number;
-  public doneTaskCount: number;
-
 
   constructor(taskUser: User) {
     this.fillEntity(taskUser);
@@ -44,8 +41,6 @@ export class TaskUserEntity implements User {
       specialization: this.specialization,
       failedTaskId: this.failedTaskId,
       doneTaskId: this.doneTaskId,
-      failedTaskCount: this.failedTaskCount,
-      doneTaskCount: this.doneTaskCount,
       newTaskCount: this.newTaskCount,
       taskCount: this.taskCount,
       rating: this.rating,

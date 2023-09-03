@@ -29,39 +29,4 @@ export class UserRdo {
   })
   @Expose()
   public lastname: string;
-
-  @ApiProperty({
-    description: 'User city',
-    example: 'Санкт-Петербург'
-  })
-  @Expose()
-  public city: string;
-
-  @ApiProperty({
-    description: 'Role',
-    example: 'Исполнитель'
-  })
-  @Expose()
-  public role: string;
-
-  @ApiProperty({
-    description: 'Personal information',
-    example: 'Женат'
-  })
-  @Expose()
-  public personalInfo: string;
-
-  @ApiProperty({
-    description: 'Specialization',
-    example: 'электрик'
-  })
-  @Expose()
-  public specialization: string[];
-
-  @ApiProperty({
-    description: 'User avatar',
-    example: 'example.jpg'
-  })
-  @Expose()
-  public avatar: string;
 }

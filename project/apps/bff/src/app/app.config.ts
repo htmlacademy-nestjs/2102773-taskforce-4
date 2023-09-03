@@ -3,7 +3,8 @@ export enum ApplicationServiceURL {
   User = 'http://localhost:3333/api/user',
   Task = 'http://localhost:3000/api/tasks',
   Comment = 'http://localhost:3000/api/comments',
-  Upload = 'http://localhost:3334/api/files'
+  Upload = 'http://localhost:3334/api/files',
+  Review = 'http://localhost:3333/api/review/',
 }
 
 export const HTTP_CLIENT_MAX_REDIRECTS = 5;
