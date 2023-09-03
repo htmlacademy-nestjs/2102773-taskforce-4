@@ -57,4 +57,11 @@ export class UserRdo {
   })
   @Expose()
   public specialization: string[];
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: 'example.jpg'
+  })
+  @Expose()
+  public avatar: string;
 }

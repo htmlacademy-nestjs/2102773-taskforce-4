@@ -22,7 +22,8 @@ export class FileController {
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    console.log(req)
+    console.log(req.headers['content-type'])
+    console.log(file)
     const newFile = await this.fileService.saveFile(file);
     const path = `${this.applicationConfig.serveRoot}${newFile.path}`;
     return fillObject(UploadedFileRdo, Object.assign(newFile, { path }));

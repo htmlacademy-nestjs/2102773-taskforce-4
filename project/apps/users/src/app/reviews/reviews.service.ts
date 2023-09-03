@@ -17,4 +17,8 @@ export class ReviewService {
   async getReview(id: string): Promise<Review> {
     return this.reviewRepository.findById(id);
   }
+
+  async getReviewByUser(userId: string): Promise<Review[]> {
+    return this.reviewRepository.findByUserId(userId);
+  }
 }

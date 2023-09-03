@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Get, Param, Patch, Post, Req, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -10,6 +10,8 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
 import { UserRdo } from './rdo/user.rdo';
 import { fillObject } from '@project/util/util-core';
+import 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -31,9 +33,11 @@ export class UsersController {
   }
 
   @Post('avatar')
-  public async avatarUpload(@Req() req: Request) {
+  @UseInterceptors(FileInterceptor('file'))
+  public async avatarUpload(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
     console.log(req.headers)
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Upload}/upload`, null, {
+    console.log(file)
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Upload}/upload`, file, {
       headers: {
         'Content-Type': req.headers['content-type'],
       }
@@ -60,7 +64,7 @@ export class UsersController {
       }
     });
 
-    return data;
+    return fillObject(UserRdo, data);
   }
 
   @UseGuards(CheckAuthGuard)
@@ -92,6 +96,6 @@ export class UsersController {
         'Authorization': req.headers['authorization']
       }
     });
-    return fillObject(UserRdo, data);
+    return data;
   }
 }

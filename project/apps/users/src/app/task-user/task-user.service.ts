@@ -4,6 +4,7 @@ import { User } from "@project/shared/app-types";
 import { TaskUserModel } from "./task-user.model";
 import { InjectModel } from "@nestjs/mongoose";
 import mongoose, { Model, Types } from "mongoose";
+import { ReviewRepository } from "../reviews/reviews.repository";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -11,6 +12,7 @@ const ObjectId = mongoose.Types.ObjectId;
 export class TaskUserService {
   constructor(
     private readonly taskUserRepository: TaskUserRepository,
+    private readonly reviewRepository: ReviewRepository,
     @InjectModel(TaskUserModel.name) private readonly taskUserModel: Model<TaskUserModel>
   ) {}
 
@@ -25,6 +27,10 @@ export class TaskUserService {
   }
 
   public async calculateRating(id: Types.ObjectId): Promise<User> {
+
+    if (((await this.reviewRepository.findByUserId(id.toString())).length === 0)) {
+      return null;
+    }
 
     const result = await this.taskUserModel
     .aggregate([

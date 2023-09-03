@@ -64,6 +64,7 @@ export class AuthenticationController {
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     await this.userService.calculateRatingPlace(id)
+
     if (existUser.role === UserRole.Admin) {
       return fillObject(AdminUserRdo, existUser);
     }

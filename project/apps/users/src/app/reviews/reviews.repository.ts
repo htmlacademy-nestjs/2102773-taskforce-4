@@ -27,6 +27,12 @@ export class ReviewRepository implements CRUDRepository<ReviewEntity, string, Re
       .exec();
   }
 
+  public async findByUserId(userId: string): Promise<Review[] | null> {
+    return this.reviewModel
+      .find({ userId: userId })
+      .exec();
+  }
+
   public async update(id: string, item: ReviewEntity): Promise<Review> {
     return this.reviewModel
       .findByIdAndUpdate(id, item.toObject(), { new: true })

@@ -64,4 +64,11 @@ export class UserRdo {
 
   @Expose()
   public failedTaskId: number[];
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: 'example.jpg'
+  })
+  @Expose()
+  public avatar: string;
 }
