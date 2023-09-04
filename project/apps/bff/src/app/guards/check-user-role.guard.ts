@@ -18,7 +18,7 @@ export class CheckUserRoleGuard implements CanActivate {
     })
 
     if (data.role !== UserRole.User) {
-      throw new NotFoundException(`Только пользователь с ролью ${UserRole.User} может откликаться на задачи`);
+      throw new NotFoundException(`Только пользователь с ролью ${UserRole.User} может откликаться на задачи и оформлять email-рассылки`);
     }
 
     return true;

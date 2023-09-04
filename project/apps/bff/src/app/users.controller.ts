@@ -13,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import FormData from 'form-data';
 import { CheckAdminRoleGuard } from './guards/check-admin-role.guard';
 import { NewReviewDto } from './dto/new-review.dto';
+import { CheckUserRoleGuard } from './guards/check-user-role.guard';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -129,4 +130,14 @@ export class UsersController {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Review}`, dto);
     return data;
   }
+
+
+  @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
+  @Post('/email')
+  public async sendEmail(@Body() dto, @Req() { user: payload }: RequestWithTokenPayload) {
+    const {requestDate} = dto
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Email}`, {email: payload.email, requestDate})
+    return data
+  }
+
 }
