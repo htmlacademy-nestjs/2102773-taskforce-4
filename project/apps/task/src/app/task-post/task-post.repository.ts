@@ -62,6 +62,39 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
         comments: true,
         categories: true,
         city: true,
+      },
+      orderBy: [
+        { createdAt: 'desc'}
+      ],
+    });
+  }
+
+  public async findByContractorId(contractorId: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        contractorId: contractorId,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        city: true,
+      },
+      orderBy: [
+        { status: 'desc'}
+      ],
+    });
+  }
+
+  public async findByUserAndContractor(userId: string, contractorId: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        userId: userId,
+        contractorId: contractorId,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        city: true,
       }
     });
   }

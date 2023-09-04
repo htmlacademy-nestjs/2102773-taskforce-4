@@ -107,10 +107,11 @@ export class TaskRdo {
   public contractorId?: string;
 
   @ApiProperty({
-    description: 'users Responses Id',
-    example: ['1'],
+    description: 'users Responses count',
+    example: 1,
   })
-  @Expose()
+  @Expose({ name: 'usersResponsesId'})
+  @Transform(({ value }) => value.length)
   public usersResponsesCount: number;
 
 }

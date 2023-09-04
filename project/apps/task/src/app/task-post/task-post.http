@@ -23,7 +23,7 @@ DELETE http://localhost:3000/api/tasks/2 HTTP/1.1
 ###
 
 # Get task by id
-GET http://localhost:3000/api/tasks/57 HTTP/1.1
+GET http://localhost:3000/api/tasks/1 HTTP/1.1
 
 ###
 
@@ -33,12 +33,12 @@ GET http://localhost:3000/api/tasks HTTP/1.1
 ###
 
 # Get all tasks and filtres
-GET http://localhost:3000/api/tasks?sortDirection=desc&status=Новое&tag=gdvfvf,hgtf&page=1 HTTP/1.1
+GET http://localhost:3000/api/tasks?sortDirection=desc&userId=64f385061e458ccd0a1ff619&page=1 HTTP/1.1
 
 ###
 
 # Get all tasks and filtres
-GET http://localhost:3000/api/tasks/user/64f06dc90c04c69aa6115371?status=Новое HTTP/1.1
+GET http://localhost:3000/api/tasks/user/64f385061e458ccd0a1ff619?status=Новое HTTP/1.1
 
 ###
 

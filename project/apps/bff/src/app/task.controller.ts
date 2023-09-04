@@ -11,7 +11,7 @@ import { PostQuery } from './query/post.query';
 import { CheckUserGuard } from './guards/check-user.guard';
 import { fillObject, makeUniq } from '@project/util/util-core';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
-import { RequestWithTokenPayload, TaskStatus } from '@project/shared/app-types';
+import { RequestWithTokenPayload, TaskStatus, UserRole } from '@project/shared/app-types';
 import { TaskRdo } from './rdo/task.rdo';
 import { UserStatusInterceptor } from './interceptors/user-status.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -64,11 +64,31 @@ export class TaskController {
         'Authorization': req.headers['authorization']
       }
     })).data;
-
-    console.log(data)
-
     return fillObject(TaskRdo, {...data, user: fillObject(UserRdo, user)});
   }
+
+
+////////////////////
+
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(UseridInterceptor)
+  @Get('/')
+  public async indexTasks(@Req() { user: payload }: RequestWithTokenPayload) {
+
+    if (payload.role === UserRole.Admin) {
+      const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}?userId=${payload.sub}&sortDirection=desc`)
+    return data
+    }
+
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/contractor/${payload.sub}`)
+    return data
+
+  }
+
+
+/////////////////////////
+
+
 
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @UseInterceptors(UseridInterceptor)
@@ -76,10 +96,14 @@ export class TaskController {
   public async addResponse(@Param('id') id: number, @Body() {userId}) {
     const task = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${id}`)).data;
 
+    console.log(userId)
+    console.log(task)
+
     if (task.status !== TaskStatus.New) {
       throw new NotFoundException(`Только на новые задачи можно откликаться`);
     }
     const usersResponsesId = task.usersResponsesId;
+    console.log(usersResponsesId)
 
     const { data } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Task}/${id}`,

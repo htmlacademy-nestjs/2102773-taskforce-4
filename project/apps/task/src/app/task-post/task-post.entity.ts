@@ -11,7 +11,7 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
   public publishAt?: Date;
   public userId: string;
   public comments?: Comment[];
-  public categories?: Category[];
+  public categories: Category[];
   public tags?: string[];
   public dedline: Date;
   public image?: string;

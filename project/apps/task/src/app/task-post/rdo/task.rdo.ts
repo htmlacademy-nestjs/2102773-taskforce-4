@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { City } from '@prisma/client';
 import { Category, TaskStatus } from '@project/shared/app-types';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 export class TaskRdo {
   @ApiProperty({
@@ -105,13 +105,8 @@ export class TaskRdo {
   @Expose()
   public contractorId?: string;
 
-  @ApiProperty({
-    description: 'users Responses count',
-    example: 1,
-  })
-  @Expose({ name: 'usersResponsesId'})
-  @Transform(({ value }) => value.length)
-  public usersResponsesCount: number;
+  @Expose()
+  public usersResponsesId: number[];
 
   @ApiProperty({
     description: 'Task create date',

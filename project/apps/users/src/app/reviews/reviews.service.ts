@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { Review } from "@project/shared/app-types";
 import { ReviewRepository } from "./reviews.repository";
 import { NewReviewDto } from "./dto/new-review.dto";
@@ -11,6 +11,10 @@ export class ReviewService {
   ) {}
 
   async createReview(dto: NewReviewDto): Promise<Review> {
+    const reviews = await this.reviewRepository.findByTaskId(dto.taskId)
+    if (reviews.length !== 0) {
+      throw new BadRequestException('Одно выполненное задание — один отзыв');
+    }
     return this.reviewRepository.create(new ReviewEntity(dto))
   }
 

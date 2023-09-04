@@ -50,6 +50,28 @@ export class TaskPostController {
   }
 
   @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by user found'
+  })
+  @Get('contractor/:id')
+  async showTaskByContractor(@Param('id') userId: string) {
+    const posts = await this.taskPostService.getTasksByContractorId(userId);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by contractor and user found'
+  })
+  @Get('tasksByContractor/:id')
+  async showTaskByUserAndContractor(@Param('id') userId: string, @Query() {contractorId}: PostQuery) {
+    const posts = await this.taskPostService.getTasksByUserAndContractor(userId, contractorId);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new task has been successfully created.'
   })

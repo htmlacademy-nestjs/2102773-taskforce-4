@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Body, Controller, Get, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -118,7 +118,14 @@ export class UsersController {
 
   @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
   @Post('/review')
-  public async createReview(@Body() dto: NewReviewDto) {
+  public async createReview(@Body() dto: NewReviewDto, @Req() { user: payload }: RequestWithTokenPayload) {
+
+    const tasks = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/tasksByContractor/${payload.sub}?contractorId=${dto.userId}`)).data
+
+    if (tasks.length === 0) {
+      throw new NotFoundException('Заказчики могут оставить отзыв только по тем исполнителям, которые выполняли его задания.');
+    }
+
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Review}`, dto);
     return data;
   }

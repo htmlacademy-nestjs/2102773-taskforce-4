@@ -33,6 +33,14 @@ export class TaskPostService {
     return this.taskPostRepository.findByUserId(id, status);
   }
 
+  async getTasksByContractorId(id: string): Promise<Task[]> {
+    return this.taskPostRepository.findByContractorId(id);
+  }
+
+  async getTasksByUserAndContractor(id: string, contractorId: string): Promise<Task[]> {
+    return this.taskPostRepository.findByUserAndContractor(id, contractorId);
+  }
+
   async getTasks(query: PostQuery): Promise<Task[]> {
     return this.taskPostRepository.find(query);
   }
