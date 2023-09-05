@@ -17,6 +17,7 @@ import { UserStatusInterceptor } from './interceptors/user-status.interceptor';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FormData from 'form-data';
 import { UserRdo } from './rdo/user.rdo';
+import { FileSize, TaskError } from './app.constant';
 
 @Controller('task')
 @UseFilters(AxiosExceptionFilter)
@@ -68,8 +69,6 @@ export class TaskController {
   }
 
 
-////////////////////
-
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UseridInterceptor)
   @Get('/')
@@ -82,13 +81,7 @@ export class TaskController {
 
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/contractor/${payload.sub}`)
     return data
-
   }
-
-
-/////////////////////////
-
-
 
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @UseInterceptors(UseridInterceptor)
@@ -96,14 +89,10 @@ export class TaskController {
   public async addResponse(@Param('id') id: number, @Body() {userId}) {
     const task = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${id}`)).data;
 
-    console.log(userId)
-    console.log(task)
-
     if (task.status !== TaskStatus.New) {
-      throw new NotFoundException(`Только на новые задачи можно откликаться`);
+      throw new NotFoundException(`${TaskError.Status}`);
     }
     const usersResponsesId = task.usersResponsesId;
-    console.log(usersResponsesId)
 
     const { data } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Task}/${id}`,
@@ -130,11 +119,11 @@ export class TaskController {
     const failedTasksId = user.failedTaskId;
 
       if (!newStatus) {
-      throw new ForbiddenException('Пользователь с этой ролью не может присвоить этот статус');
+      throw new ForbiddenException(`${TaskError.Role}`);
     }
 
     if (!task.usersResponsesId.includes(contractorId)) {
-      throw new NotFoundException('contractorId not found ');
+      throw new NotFoundException(`${TaskError.Contractor}`);
     }
 
     if (newStatus === TaskStatus.Work) {
@@ -177,8 +166,8 @@ export class TaskController {
   @Req() req: Request, @Param('id') id: number) {
 
 
-    if (file.size > 1000000) {
-      throw new BadRequestException('Размер файла превышает допустимый');
+    if (file.size > FileSize.MaxTask) {
+      throw new BadRequestException(`${TaskError.FileSize}`);
     }
 
     const formData = new FormData();

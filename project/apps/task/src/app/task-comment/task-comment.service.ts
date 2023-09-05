@@ -5,6 +5,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from '@project/shared/app-types';
 import { PostQuery } from '../task-post/query/post.query';
 import { TaskPostRepository } from '../task-post/task-post.repository';
+import { TaskCommentError } from './task-comment.constant';
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class TaskCommentService {
     const commentEntity = new TaskCommentEntity(dto);
 
     if (await this.taskPostRepository.findById(commentEntity.taskId) === null) {
-      throw new NotFoundException('TaskId not found');
+      throw new NotFoundException(TaskCommentError.TaskId);
     }
 
     return this.taskCommentRepository.create(commentEntity);

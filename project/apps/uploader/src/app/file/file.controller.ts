@@ -9,6 +9,8 @@ import { uploaderConfig } from '@project/config/config-uploader';
 import { ConfigType } from '@nestjs/config';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 
+const FILE_FORMAT_ERROR = 'Недопустимый формат файла'
+
 @Controller('files')
 export class FileController {
 
@@ -24,7 +26,7 @@ export class FileController {
   public async uploadFile(@UploadedFile() file: Express.Multer.File) {
 
     if (file.mimetype !== 'image/jpeg' && file.mimetype !=='image/png') {
-      throw new BadRequestException('Недопустимый формат файла');
+      throw new BadRequestException(FILE_FORMAT_ERROR);
     }
 
     const newFile = await this.fileService.saveFile(file);

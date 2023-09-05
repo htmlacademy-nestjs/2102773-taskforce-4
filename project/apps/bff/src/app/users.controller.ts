@@ -14,6 +14,7 @@ import FormData from 'form-data';
 import { CheckAdminRoleGuard } from './guards/check-admin-role.guard';
 import { NewReviewDto } from './dto/new-review.dto';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
+import { FileSize, UserError } from './app.constant';
 
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
@@ -41,8 +42,8 @@ export class UsersController {
   @Req() { user: payload }: RequestWithTokenPayload, @Req() req: Request) {
 
 
-    if (file.size > 500000) {
-      throw new BadRequestException('Размер файла превышает допустимый');
+    if (file.size > FileSize.MaxAvatar) {
+      throw new BadRequestException(`${UserError.FileSize}`);
     }
 
     const formData = new FormData();
@@ -124,7 +125,7 @@ export class UsersController {
     const tasks = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/tasksByContractor/${payload.sub}?contractorId=${dto.userId}`)).data
 
     if (tasks.length === 0) {
-      throw new NotFoundException('Заказчики могут оставить отзыв только по тем исполнителям, которые выполняли его задания.');
+      throw new NotFoundException(`${UserError.UserReview}`);
     }
 
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Review}`, dto);
