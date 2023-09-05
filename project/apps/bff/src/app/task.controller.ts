@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, Patch, Post, Query, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, HttpStatus, NotFoundException, Param, Patch, Post, Query, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
@@ -18,7 +18,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import FormData from 'form-data';
 import { UserRdo } from './rdo/user.rdo';
 import { FileSize, TaskError } from './app.constant';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AddNewCategoryDto } from './dto/add-new-category.dto';
 
+@ApiTags('Task')
 @Controller('task')
 @UseFilters(AxiosExceptionFilter)
 export class TaskController {
@@ -26,6 +29,10 @@ export class TaskController {
     private readonly httpService: HttpService,
   ) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new task has been successfully created.'
+  })
   @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
   @UseInterceptors(UseridInterceptor)
   @Post('/')
@@ -35,6 +42,10 @@ export class TaskController {
     return fillObject(TaskRdo, {...data, user: user});
   }
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new comment has been successfully created.'
+  })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UseridInterceptor)
   @Post('/comments')
@@ -43,12 +54,20 @@ export class TaskController {
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'All comments found'
+  })
   @Get('/comments')
   public async indexComments(@Query() query: PostQuery) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Comment}/`, {params: query});
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Comment has been deleted.'
+  })
   @UseGuards(CheckAuthGuard, CheckUserGuard)
   @Delete('/comments/:id')
   public async deleteComment(@Param('id') id: number) {
@@ -56,6 +75,11 @@ export class TaskController {
     return data;
   }
 
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'task found'
+  })
   @Get('/:taskId')
   public async showTask(@Param('taskId') taskId: number, @Req() req: Request) {
     const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Task}/${taskId}`);
@@ -69,6 +93,11 @@ export class TaskController {
   }
 
 
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task found'
+  })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UseridInterceptor)
   @Get('/')
@@ -83,6 +112,10 @@ export class TaskController {
     return data
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Response list has been updeted.'
+  })
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @UseInterceptors(UseridInterceptor)
   @Patch('response/:id')
@@ -101,6 +134,10 @@ export class TaskController {
       return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Status has been updeted.'
+  })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(UseridInterceptor, UserStatusInterceptor)
   @Patch('status/:id')
@@ -151,6 +188,10 @@ export class TaskController {
       return data
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Task has been deleted.'
+  })
   @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
   @UseInterceptors(UseridInterceptor)
   @Delete('/:id')
@@ -187,4 +228,27 @@ export class TaskController {
 
     return data;
   }
+
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new category has been successfully created.'
+  })
+  @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
+  @Post('/category')
+  public async createCategory(@Body() dto: AddNewCategoryDto) {
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Category}/`, dto);
+    return data;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'All categories found'
+  })
+  // @UseGuards(CheckAuthGuard)
+  @Get('/category')
+  public async indexCaregories() {
+    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Category}/`);
+    return data;
+  }
+
 }
