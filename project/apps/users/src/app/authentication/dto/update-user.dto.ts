@@ -54,4 +54,11 @@ export class UpdateUserDto {
   @IsOptional()
   @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
   public specialization?: string[];
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: 'example.jpg'
+  })
+  @IsOptional()
+  public avatar?: string;
 }

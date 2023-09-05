@@ -5,6 +5,7 @@ import { Task } from '@project/shared/app-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { PostQuery } from './query/post.query';
 
+
 @Injectable()
 export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number, Task> {
   constructor(private readonly prisma: PrismaService) {}
@@ -21,14 +22,10 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
           connect: entityData.categories
             .map(({ categoryId }) => ({ categoryId }))
         },
-        tags: {
-          connect: entityData.tags.map(({ tagId }) => ({ tagId }))
-        },
       },
       include: {
         comments: true,
         categories: true,
-        tags: true,
         city: true,
       }
     });
@@ -50,13 +47,59 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
       include: {
         comments: true,
         categories: true,
-        tags: true,
         city: true,
       }
     });
   }
 
-  public find({limit, categories, city, contractorId, status, sortDirection, page}: PostQuery): Promise<Task[]> {
+  public async findByUserId(userId: string, status: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        userId: userId,
+        status: status,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        city: true,
+      },
+      orderBy: [
+        { createdAt: 'desc'}
+      ],
+    });
+  }
+
+  public async findByContractorId(contractorId: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        contractorId: contractorId,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        city: true,
+      },
+      orderBy: [
+        { status: 'desc'}
+      ],
+    });
+  }
+
+  public async findByUserAndContractor(userId: string, contractorId: string): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: {
+        userId: userId,
+        contractorId: contractorId,
+      },
+      include: {
+        comments: true,
+        categories: true,
+        city: true,
+      }
+    });
+  }
+
+  public find({limit, categories, city, contractorId, status, sortDirection, page, userId, tag}: PostQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         categories: {
@@ -66,17 +109,18 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
             }
           }
         },
-         city: {
+        city: {
           id: {in: city}
         },
         status: status,
         contractorId: contractorId,
+        userId: userId,
+        tags: tag !== undefined ? {hasEvery: tag}: undefined,
       },
       take: limit,
       include: {
         comments: true,
         categories: true,
-        tags: true,
         city: true,
       },
       orderBy: [
@@ -101,14 +145,10 @@ export class TaskPostRepository implements CRUDRepository<TaskPostEntity, number
           connect: item.toObject().categories
             .map(({ categoryId }) => ({ categoryId }))
         },
-        tags: {
-          connect: item.toObject().tags.map(({ tagId }) => ({ tagId }))
-        }
       },
       include: {
         comments: true,
         categories: true,
-        tags: true,
         city: true,
       }
     });

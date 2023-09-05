@@ -13,7 +13,14 @@ export class TaskUserEntity implements User {
   public role: UserRole;
   public city: UserCity;
   public personalInfo: string;
-  public specialization: string[]
+  public specialization: string[];
+  public failedTaskId: number[];
+  public doneTaskId: number[];
+  public newTaskCount: number;
+  public taskCount: number;
+  public publicTaskCount: number;
+  public rating: number;
+  public ratingPlace: number;
 
   constructor(taskUser: User) {
     this.fillEntity(taskUser);
@@ -32,6 +39,12 @@ export class TaskUserEntity implements User {
       city: this.city,
       personalInfo: this.personalInfo,
       specialization: this.specialization,
+      failedTaskId: this.failedTaskId,
+      doneTaskId: this.doneTaskId,
+      newTaskCount: this.newTaskCount,
+      taskCount: this.taskCount,
+      rating: this.rating,
+      ratingPlace: this.ratingPlace,
     };
   }
 
@@ -47,6 +60,12 @@ export class TaskUserEntity implements User {
     this.city = taskUser.city;
     this.personalInfo = taskUser.personalInfo;
     this.specialization = taskUser.specialization;
+    this.failedTaskId = taskUser.failedTaskId;
+    this.doneTaskId = taskUser.doneTaskId;
+    this.newTaskCount = taskUser.newTaskCount;
+    this.rating = taskUser.rating;
+    this.ratingPlace = taskUser.ratingPlace;
+    this.taskCount = taskUser.taskCount;
   }
 
   public async setPassword(password: string): Promise<TaskUserEntity> {

@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, NotFoundException } from '@n
 import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from '../app.config';
 import { UserRole } from '@project/shared/app-types';
+import { UserError } from '../app.constant';
 
 @Injectable()
 export class CheckUserRoleGuard implements CanActivate {
@@ -18,7 +19,7 @@ export class CheckUserRoleGuard implements CanActivate {
     })
 
     if (data.role !== UserRole.User) {
-      throw new NotFoundException(`Только пользователь с ролью ${UserRole.User} может откликаться на задачи`);
+      throw new NotFoundException(UserError.RoleUser);
     }
 
     return true;

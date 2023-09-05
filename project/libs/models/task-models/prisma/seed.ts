@@ -39,14 +39,7 @@ async function fillDb() {
             userId: '13',
             description: 'Старый течет. Надо срочно',
             cityId: 1,
-            tags: {
-              create: [
-                {
-                  message: 'срочно',
-                  userId: '13',
-                }
-              ]
-            }
+            tags: []
           },
         ]
       },

@@ -25,7 +25,7 @@ model Task {
   userId           String?    @map("user_id")
   comments         Comment[]
   favorite         Favorite[]
-  tags             Tag[]
+  tags             String[]   @default([])
   dedline          DateTime   @default(now())
   image            String     @default("")
   status           String     @default("Новое")
@@ -53,18 +53,6 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("comments")
-}
-
-model Tag {
-  tagId     Int      @id @default(autoincrement()) @map("tag_id")
-  message   String
-  userId    String   @map("user_id")
-  task      Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
-  taskId    Int      @map("task_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("tags")
 }
 
 model Favorite {

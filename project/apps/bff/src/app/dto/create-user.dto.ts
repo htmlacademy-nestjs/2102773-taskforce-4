@@ -66,4 +66,11 @@ export class CreateUserDto {
   })
   @IsOptional()
   public specialization?: string[];
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: 'example.jpg'
+  })
+  @IsOptional()
+  public avatar?: string;
 }

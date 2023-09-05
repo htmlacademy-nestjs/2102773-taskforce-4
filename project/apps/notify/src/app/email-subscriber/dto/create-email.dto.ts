@@ -1,6 +1,5 @@
-import { IsDate, IsEmail, IsEnum } from 'class-validator';
+import { IsDate, IsEmail } from 'class-validator';
 import { EmailSubscriberError } from '../email-subscriber.constant';
-import { UserRole } from '@project/shared/app-types';
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateEmailDto {
@@ -10,13 +9,6 @@ export class CreateEmailDto {
   })
   @IsEmail({}, { message: EmailSubscriberError.EmailNotValid })
   public email?: string;
-
-  @ApiProperty({
-    description: 'Role',
-    example: 'Исполнитель'
-  })
-  @IsEnum(UserRole, { message: EmailSubscriberError.RoleNotValid })
-  public role: UserRole;
 
   @ApiProperty({
     description: 'Date of request',

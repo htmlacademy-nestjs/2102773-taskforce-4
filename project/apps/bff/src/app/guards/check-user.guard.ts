@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from '../app.config';
+import { UserError } from '../app.constant';
 
 @Injectable()
 export class CheckUserGuard implements CanActivate {
@@ -19,7 +20,7 @@ export class CheckUserGuard implements CanActivate {
     const user = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Comment}/${request.params.id}`);
 
     if (user.data.userId !== data.sub) {
-      throw new NotFoundException(`Пользователь может удалять только свои комментарии`);
+      throw new NotFoundException(UserError.DeleteComment);
     }
 
     return true;

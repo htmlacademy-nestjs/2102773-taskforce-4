@@ -12,7 +12,7 @@ export class UserStatusInterceptor implements NestInterceptor {
       request.body['newStatus'] = status;
     }
 
-    if (userRole === UserRole.User && (status !== TaskStatus.Canceled || status !== TaskStatus.Work)) {
+    if (userRole === UserRole.User && status !== TaskStatus.Canceled && status !== TaskStatus.Work && status !== TaskStatus.New) {
       request.body['newStatus'] = status;
     }
 

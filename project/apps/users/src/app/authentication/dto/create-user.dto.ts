@@ -26,6 +26,8 @@ export class CreateUserDto {
     example: 'Keks',
   })
   @IsString()
+  @MinLength(3, {message: AuthUserError.MinNameLength})
+  @MaxLength(50, {message: AuthUserError.MaxNameLength})
   public firstname: string;
 
   @ApiProperty({
@@ -33,6 +35,8 @@ export class CreateUserDto {
     example: 'Ivanov'
   })
   @IsString()
+  @MinLength(3, {message: AuthUserError.MinNameLength})
+  @MaxLength(50, {message: AuthUserError.MaxNameLength})
   public lastname: string;
 
   @ApiProperty({
@@ -73,4 +77,11 @@ export class CreateUserDto {
   @IsOptional()
   @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
   public specialization?: string[];
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: 'example.jpg'
+  })
+  @IsOptional()
+  public avatar?: string;
 }

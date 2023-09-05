@@ -3,15 +3,13 @@ POST http://localhost:4000/api/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user3@notfound.local",
-  "dateBirth": "2004-09-21",
-  "firstname": "Keks",
-  "lastname": "Smith",
+  "email": "user4@notfound.local",
+  "dateBirth": "1988-03-12",
+  "firstname": "Keks4",
+  "lastname": "Smith4",
   "password": "123456",
-  "city": "Москва",
-  "role": "Заказчик",
-  "specialization": ["электрик", "электрик", "электрик", "электрик", "agwgw"],
-  "personalInfo": "Женат"
+  "city": "Санкт-Петербург",
+  "role": "Заказчик"
 }
 
 ###
@@ -22,26 +20,37 @@ Content-Type: application/json
 
 {
   "email": "user@notfound.local",
-  "password": "1234567"
+  "password": "123456"
 }
 
 ###
 
 # Get new JWT pair
 POST http://localhost:4000/api/users/refresh HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgyIiwiZmlyc3RuYW1lIjoiS2VrczciLCJ0b2tlbklkIjoiZmZmNTJjOTItZWQxZi00MDgzLWFjYWMtNzBiYjYyYmIwZmMxIiwiaWF0IjoxNjkzMjMyNjE2LCJleHAiOjE2OTU4MjQ2MTZ9.fh76RIEQAuFtpjSNSkcgYcUq7lqf-ALy6Ag-HACCKqk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwidG9rZW5JZCI6ImYxNjI4MGY4LTEwOTItNDdhMC05NWNjLWFlYTA1NzJjZDY0ZSIsImlhdCI6MTY5MzY4MTEyMSwiZXhwIjoxNjk2MjczMTIxfQ.HTwNsCK9rgAg1UpSqrT2D3PYzRDZkXKUKM3Ski7yPdI
 
+###
+
+# Upload avatar for user by id
+POST http://localhost:4000/api/users/avatar HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM3MzkxMjcsImV4cCI6MTY5MzczOTcyN30.qRIBdoPT-cAexEY3Nz6K-nuNsBQ6erQc85I7DCv0Kbg
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="Визуализация.png"
+
+< C:\Users\gerbe\Pictures\Визуализация.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
 
 # Update user
 PATCH http://localhost:4000/api/users/update HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwiaWF0IjoxNjkzMTY0ODQ4LCJleHAiOjE2OTMxNjU0NDh9.9L8M2s9RA9hdvrLJjV7QU4mxxvFJc-B0Ayow4YdKipQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODU0ZTFlNDU4Y2NkMGExZmY2MWUiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoMiIsImZpcnN0bmFtZSI6Iktla3MyIiwiaWF0IjoxNjkzNzcyODM4LCJleHAiOjE2OTM3NzM0Mzh9.4tjDd0Mj1C-BZbhGd61HTq4pIu4IrJKCROBPR4Lu_NA
 
 {
-  "firstname": "Keks7",
-  "lastname": "Smith2"
+  "specialization": ["Электрик, Разработчик"]
 }
 
 ###
@@ -49,74 +58,109 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZ
 # Change user password
 PATCH http://localhost:4000/api/users/changePassword HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTFlOWU2YThhYjQwOTMzMTBjZDciLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoIiwiZmlyc3RuYW1lIjoiS2VrcyIsImlhdCI6MTY5MzEyOTUzNSwiZXhwIjoxNjkzMTMwMTM1fQ.D0kmFybm1P3amdPp8uQmlEwEw2ZaeK8c5C006R27oKU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM2ODkzMTYsImV4cCI6MTY5MzY4OTkxNn0.K-8vycz8R0xx0rA2jmCr7DoiAWgqKR3GKqnRw04fNiw
 
 {
-  "password": "1234567",
-  "newPassword": "12345"
+  "password": "123456",
+  "newPassword": "123456"
 }
 
 ###
+
+# Get user by id
+GET http://localhost:4000/api/users/64f3854e1e458ccd0a1ff61e HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGY0NzFmZjlkNDU0MmY0MDI4MDgxZmQiLCJlbWFpbCI6InVzZXI0QG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCX0LDQutCw0LfRh9C40LoiLCJsYXN0bmFtZSI6IlNtaXRoNCIsImZpcnN0bmFtZSI6Iktla3M0IiwiaWF0IjoxNjkzNzc0NzYxLCJleHAiOjE2OTM3NzUzNjF9.FO1uSXRfyGG4ChMhvIxUSzt4uGpqdN1SNU5amWdN_gA
+
+###
+
+
 
 ###################################################
 
 # Create a new task
 POST http://localhost:4000/api/task HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgyIiwiZmlyc3RuYW1lIjoiS2VrczciLCJpYXQiOjE2OTMyMzI2MTYsImV4cCI6MTY5MzIzMzIxNn0.qAFfV7cIl9Cji_U7X8nf4Qv9eIel0C4JMN1kpz0wy4s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTk1NzksImV4cCI6MTY5Mzg2MDE3OX0.4gnNV0emppkFeqm2vxjwkxMsFHpK8wo8KwnIvhlsYPk
 
 {
-  "title": "Решить задач1dbea456gegbebee78910",
-  "description": "Решить задачу по математике Решить задачу по математике Решить задачу по математике Решить задачу по математике",
+  "title": "Написать код и сдать проект по теме nestjs 7",
+  "description": "Написать код и сдать проект по теме nestjs. очень сложно. Срочно. Времени нет. Умоляю. ООООООООООЧЕНЬНАДО",
   "cityId": 1,
   "categories": [1],
-  "tags": [1],
   "price": 250,
   "address": "1233451234567",
-  "dedline": "2023-08-29"
+  "dedline": "2023-09-06"
 }
 
 ###
 
 # Add response on Task by id
-PATCH http://localhost:4000/api/task/response/17 HTTP/1.1
+PATCH http://localhost:4000/api/task/response/9 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTFlOWU2YThhYjQwOTMzMTBjZDciLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoIiwiZmlyc3RuYW1lIjoiS2VrcyIsImlhdCI6MTY5MzI5MTIyNSwiZXhwIjoxNjkzMjkxODI1fQ.1PPibJPnQrtaRtX8n_ux0V8PEb9yZnstsC4S20wvu9E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODU3NjFlNDU4Y2NkMGExZmY2MjQiLCJlbWFpbCI6InVzZXIzQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoMyIsImZpcnN0bmFtZSI6Iktla3MzIiwiaWF0IjoxNjkzODU5Njc0LCJleHAiOjE2OTM4NjAyNzR9.tuQ-dYSC-P1w3LtDusDdKiNDaNP86ec6LdTgmqLnzCA
 
 ###
 
 # Change status of Task by id
-PATCH http://localhost:4000/api/task/status/15?status=В работе HTTP/1.1
+PATCH http://localhost:4000/api/task/status/9?status=Выполнено HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgyIiwiZmlyc3RuYW1lIjoiS2VrczciLCJpYXQiOjE2OTMzMjM2MDYsImV4cCI6MTY5MzMyNDIwNn0.xBWnMLPZMZ-d05f4fRfpAbA4ANA7F_0ylSc_GoDdzZQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODU3NjFlNDU4Y2NkMGExZmY2MjQiLCJlbWFpbCI6InVzZXIzQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoMyIsImZpcnN0bmFtZSI6Iktla3MzIiwiaWF0IjoxNjkzODU5ODY0LCJleHAiOjE2OTM4NjA0NjR9.wgja3W7vxGZs2SGizxxAn3i6M6wFUqPiT5U74g340RA
 
 {
-  "contractorId":"12"
+  "contractorId":"64f385761e458ccd0a1ff624"
 }
 
 ###
 
 # Delete Task by id
-DELETE http://localhost:4000/api/task/2 HTTP/1.1
+DELETE http://localhost:4000/api/task/3 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgyIiwiZmlyc3RuYW1lIjoiS2VrczciLCJpYXQiOjE2OTMzMjMzNDEsImV4cCI6MTY5MzMyMzk0MX0.0BAUtLEEvze2iZILzG11GoqQPD9O4V1AU3ymuVdtSFo
+
+###
+
+# Upload image for task by id
+POST http://localhost:4000/api/task/image/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM3NjUyNDEsImV4cCI6MTY5Mzc2NTg0MX0.megqdRyVlZFbeNegMrmyGiTN5JxgCwf-OkCuRpu7Lkk
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="Визуализация.png"
+
+< C:\Users\gerbe\Pictures\Визуализация.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# Get task by id
+GET http://localhost:4000/api/task/8 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTk3MDcsImV4cCI6MTY5Mzg2MDMwN30.u5BpphmPY3Gc8JED4WebsJRnlHR7ev306SgCl-ZVKz0
 
 ###
 
 ####################################################
 
 
+# Get my tasks
+GET http://localhost:4000/api/task/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTk4MDgsImV4cCI6MTY5Mzg2MDQwOH0.ESkXu0M0v-wnZ7j6RpRrwsCmF1ygmelldGjGCASlAPo
+
+###
 
 
+####################################################
 
 
 # Create a new comment
 POST http://localhost:4000/api/task/comments HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgyIiwiZmlyc3RuYW1lIjoiS2VrczciLCJpYXQiOjE2OTMyMzI2MTYsImV4cCI6MTY5MzIzMzIxNn0.qAFfV7cIl9Cji_U7X8nf4Qv9eIel0C4JMN1kpz0wy4s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTE5MDIsImV4cCI6MTY5Mzg1MjUwMn0.PnuSYjH25fPrY0lj_71AAJ9ZlS5lyqimpgFEJZj99Gc
 
 {
   "message": "Проверка 3 комментариев user",
-  "taskId": 17
+  "taskId": 1
 }
 
 ###
@@ -127,7 +171,39 @@ GET http://localhost:4000/api/task/comments?limit=10&page=1 HTTP/1.1
 ###
 
 # Delete comment by id
-DELETE http://localhost:4000/api/task/comments/17 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU5YTIwZGU2YThhYjQwOTMzMTBjZGIiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGgiLCJmaXJzdG5hbWUiOiJLZWtzIiwiaWF0IjoxNjkzMTU0MTQ1LCJleHAiOjE2OTMxNTQ3NDV9.cxinG6Wt0xOnST6398Ky3l5FmAxkyVij28QhwP8sH6I
+DELETE http://localhost:4000/api/task/comments/5 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODU3NjFlNDU4Y2NkMGExZmY2MjQiLCJlbWFpbCI6InVzZXIzQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoMyIsImZpcnN0bmFtZSI6Iktla3MzIiwiaWF0IjoxNjkzNzY4NDk3LCJleHAiOjE2OTM3NjkwOTd9.G4ya2EPWxAxbt9kDbV-O4ErcoAE75-cq_v1CHmJyxp0
+
+###
+
+
+################################################
+
+# Create a new review
+POST http://localhost:4000/api/users/review/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTM2NTksImV4cCI6MTY5Mzg1NDI1OX0.JSrSZox3heiJBk8ua3URlK_rR6Oq2mz1cdrH0v7QBrU
+
+{
+  "taskId": 1,
+  "userId": "64f3854e1e458ccd0a1ff61e",
+  "rating": 5,
+  "message": "Проверка 2 работы отзывов Проверка работы отзывов Проверка работы отзывов Проверка работы отзывов"
+}
+
+###
+
+
+
+#################################################
+
+# Send Email
+POST http://localhost:4000/api/users/email/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NjEyNDEsImV4cCI6MTY5Mzg2MTg0MX0.gKHDNCJa649pe5xP2wGa8QHZTuDsi4buIucrHsUzwVM
+
+{
+  "requestDate": "2023-09-02"
+}
 
 ###

@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsNumber, IsString, MaxLength, Min, MinDate, MinLength } from "class-validator";
+import { ArrayMaxSize, IsNumber, IsOptional, IsString, Matches, MaxLength, Min, MinDate, MinLength } from "class-validator";
 import { TaskPostError } from "../task-post.constant";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -70,4 +70,25 @@ export class CreatePostDto {
     example: 'example.jpg',
   })
   public image?: string;
+
+  @ApiProperty({
+    description: 'Tags for task',
+    example: 'strong',
+  })
+  @IsOptional()
+  @ArrayMaxSize(5, {message: TaskPostError.MaxTagsArrayLength})
+  @Matches(/^[a-zа-яё][^0-9\s,.;:]*$/, {
+    each: true,
+    message: TaskPostError.RegExp
+  })
+  @MaxLength(10, {
+    each: true,
+    message: 'max 10',
+  })
+  @MinLength(3, {
+    each: true,
+    message: 'min 3',
+  })
+  @Transform(({ value }) => value.map((tag: string) => tag.toLowerCase()))
+  public tags?: string[];
 }

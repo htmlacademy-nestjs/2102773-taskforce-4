@@ -1,6 +1,5 @@
 import { Category } from "./category.interface";
 import { Comment } from "./comment.interface";
-import { Tag } from "./tag.interface";
 
 export interface Task {
   id?: number;
@@ -12,7 +11,7 @@ export interface Task {
   cityId: number;
   userId: string;
   comments?: Comment[];
-  tags?: Tag[];
+  tags?: string[];
   dedline?: Date;
   image?: string;
   status: string;

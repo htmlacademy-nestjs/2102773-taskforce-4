@@ -9,4 +9,6 @@ export enum TaskPostError {
   MinAddressLength = 'Minimum address length must be 10',
   MaxAddressLength = 'Maximum address length must be 255',
   CityId = 'city is required',
+  MaxTagsArrayLength = 'Maximum tags count is 5',
+  RegExp = 'The tag must be a word and not contain spaces'
 }

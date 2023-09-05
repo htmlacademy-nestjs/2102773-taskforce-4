@@ -1,0 +1,12 @@
+# Create a new review
+POST http://localhost:3333/api/review/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "taskId": 16,
+  "userId": "64f0788c837e91ce931a310b",
+  "rating": 4,
+  "message": "Проверка 2 работы отзывов Проверка работы отзывов Проверка работы отзывов Проверка работы отзывов"
+}
+
+###

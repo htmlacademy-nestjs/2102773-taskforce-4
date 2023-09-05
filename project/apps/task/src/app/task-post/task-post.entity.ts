@@ -1,5 +1,5 @@
 import { Entity } from '@project/util/util-types';
-import { Category, Task, Comment, Tag} from '@project/shared/app-types';
+import { Category, Task, Comment } from '@project/shared/app-types';
 
 export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
   public id: number;
@@ -11,8 +11,8 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
   public publishAt?: Date;
   public userId: string;
   public comments?: Comment[];
-  public categories?: Category[];
-  public tags?: Tag[];
+  public categories: Category[];
+  public tags?: string[];
   public dedline: Date;
   public image?: string;
   public createdAt?: Date;
@@ -34,7 +34,7 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
     this.userId = entity.userId;
     this.comments = [];
     this.categories = entity.categories;
-    this.tags = [];
+    this.tags = entity.tags;
     this.dedline = entity.dedline;
     this.image = entity.image;
     this.createdAt = new Date();
@@ -48,7 +48,6 @@ export class TaskPostEntity implements Entity<TaskPostEntity>, Task {
       ...this,
       categories: [...this.categories],
       comments: [...this.comments],
-      tags: [...this.tags],
     };
   }
 

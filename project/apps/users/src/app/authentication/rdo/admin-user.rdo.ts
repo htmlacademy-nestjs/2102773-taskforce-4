@@ -67,4 +67,33 @@ export class AdminUserRdo {
   })
   @Expose()
   public personalInfo: string;
+
+  @ApiProperty({
+    description: 'Register date (ISO format)',
+    example: '03.09.2023'
+  })
+  @Expose({ name: 'createdAt'})
+  public registerDate: Date;
+
+  @ApiProperty({
+    description: 'User age',
+    example: 25
+  })
+  @Expose({ name: 'dateBirth'})
+  @Transform(({ value }) => dayjs().diff(dayjs(value), 'year'))
+  public age: number;
+
+  @ApiProperty({
+    description: 'Count of New Task',
+    example: 1
+  })
+  @Expose()
+  public newTaskCount: number;
+
+  @ApiProperty({
+    description: 'Count of Task',
+    example: 1
+  })
+  @Expose()
+  public taskCount: number;
 }

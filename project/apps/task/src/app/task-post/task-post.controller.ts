@@ -39,6 +39,39 @@ export class TaskPostController {
   }
 
   @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by user found'
+  })
+  @Get('user/:id')
+  async showTaskByUser(@Param('id') userId: string, @Query() {status}: PostQuery) {
+    const posts = await this.taskPostService.getTasksByUserId(userId, status);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by user found'
+  })
+  @Get('contractor/:id')
+  async showTaskByContractor(@Param('id') userId: string) {
+    const posts = await this.taskPostService.getTasksByContractorId(userId);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'All task by contractor and user found'
+  })
+  @Get('tasksByContractor/:id')
+  async showTaskByUserAndContractor(@Param('id') userId: string, @Query() {contractorId}: PostQuery) {
+    const posts = await this.taskPostService.getTasksByUserAndContractor(userId, contractorId);
+    return fillObject(TaskRdo, posts);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new task has been successfully created.'
   })
@@ -63,12 +96,28 @@ export class TaskPostController {
   @ApiResponse({
     type: TaskRdo,
     status: HttpStatus.OK,
-    description: 'Task has been updeted.'
+    description: 'Task status has been updeted.'
   })
+  // @Patch('/:id')
+  // async changeStatus(@Param('id') id: number, @Body() dto: UpdatePostDto, @Body() newStatus) {
+  //   const {status} = newStatus
+  //   await this.taskPostService.updateTask(id, dto, status);
+  //   return fillObject(TaskRdo, {...dto, status})
+  // }
   @Patch('/:id')
-  async changeStatus(@Param('id') id: number, @Body() dto: UpdatePostDto, @Body() newStatus) {
-    const {status} = newStatus
-    await this.taskPostService.updateTask(id, dto, status);
-    return fillObject(TaskRdo, {...dto, status})
+  async changeTask(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+    const updateTask = await this.taskPostService.updateTask(id, {...dto});
+    return fillObject(TaskRdo, updateTask)
   }
+
+  // @ApiResponse({
+  //   type: TaskRdo,
+  //   status: HttpStatus.OK,
+  //   description: 'Task image has been updeted.'
+  // })
+  // @Patch('image/:id')
+  // async setImage(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+  //   const updateTask = await this.taskPostService.updateTask(id, {...dto});
+  //   return fillObject(TaskRdo, updateTask)
+  // }
 }

@@ -57,6 +57,27 @@ export class TaskUserModel extends Document implements User {
 
   @Prop()
   public specialization: string[];
+
+  @Prop()
+  public failedTaskId: number[];
+
+  @Prop()
+  public doneTaskId: number[];
+
+  @Prop()
+  public newTaskCount: number;
+
+  @Prop()
+  public taskCount: number;
+
+  @Prop()
+  public publicTaskCount: number;
+
+  @Prop()
+  public rating: number;
+
+  @Prop()
+  public ratingPlace: number;
 }
 
 export const TaskUserSchema = SchemaFactory.createForClass(TaskUserModel);

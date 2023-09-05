@@ -60,6 +60,7 @@ export class UpdatePostDto {
   @MinDate(new Date())
   public dedline: Date;
 
+  @IsOptional()
   public image?: string;
 
   @ApiProperty({
