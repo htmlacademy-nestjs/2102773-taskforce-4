@@ -4,6 +4,8 @@ import { EMAIL_ADD_SUBSCRIBER_SUBJECT } from './mail.constant';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigType } from '@nestjs/config';
 import { notifyConfig } from '@project/config/config-notify';
+import { MailRepository } from './mail.repository';
+import { MailEntity } from './mail.entity';
 
 @Injectable()
 export class MailService {
@@ -11,6 +13,7 @@ export class MailService {
     private readonly mailerService: MailerService,
     @Inject(notifyConfig.KEY)
     private readonly serviceConfig: ConfigType<typeof notifyConfig>,
+    private readonly mailRepository: MailRepository,
     ) {}
 
   public sendNotifyNewSubscriber(subscribers: Subscriber[], email: string) {
@@ -26,5 +29,14 @@ export class MailService {
         title: title
       }
     })
+  }
+
+  public async createMailing(email: string) {
+    const mail = new MailEntity({email})
+    return this.mailRepository.create(mail);
+  }
+
+  public async getMails(email: string) {
+    return this.mailRepository.findByEmail(email)
   }
 }

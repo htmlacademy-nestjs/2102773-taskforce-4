@@ -19,7 +19,6 @@ import FormData from 'form-data';
 import { UserRdo } from './rdo/user.rdo';
 import { FileSize, TaskError } from './app.constant';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AddNewCategoryDto } from './dto/add-new-category.dto';
 
 @ApiTags('Task')
 @Controller('task')
@@ -228,27 +227,4 @@ export class TaskController {
 
     return data;
   }
-
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'The new category has been successfully created.'
-  })
-  @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
-  @Post('/category')
-  public async createCategory(@Body() dto: AddNewCategoryDto) {
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Category}/`, dto);
-    return data;
-  }
-
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'All categories found'
-  })
-  // @UseGuards(CheckAuthGuard)
-  @Get('/category')
-  public async indexCaregories() {
-    const { data } = await this.httpService.axiosRef.get(`${ApplicationServiceURL.Category}/`);
-    return data;
-  }
-
 }

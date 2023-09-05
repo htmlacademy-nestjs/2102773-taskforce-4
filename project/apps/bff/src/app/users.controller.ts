@@ -169,8 +169,17 @@ export class UsersController {
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @Post('/email')
   public async sendEmail(@Body() dto, @Req() { user: payload }: RequestWithTokenPayload) {
-    const {requestDate} = dto
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Email}`, {email: payload.email, requestDate})
+
+    const mails = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Email}/${payload.email}`)).data;
+
+    let requestDate: Date;
+
+    if (mails.length === 0) {
+      requestDate = new Date()
+    }
+    else {requestDate = new Date(mails[0].createdAt)}
+
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Email}`, {email: payload.email, requestDate: requestDate})
     return data
   }
 }
