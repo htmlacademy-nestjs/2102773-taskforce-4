@@ -2,16 +2,22 @@ import { Module } from '@nestjs/common';
 import { getMailerAsyncOptions } from '@project/util/util-core';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailService } from './mail.service';
+import { MailRepository } from './mail.repository';
+import { MailModel, MailSchema } from './mail.model';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MailerModule.forRootAsync(getMailerAsyncOptions('application.mail'))
+    MailerModule.forRootAsync(getMailerAsyncOptions('application.mail')),
+    MongooseModule.forFeature([
+      { name: MailModel.name, schema: MailSchema }
+    ]),
   ],
   providers: [
-    MailService
+    MailService, MailRepository
   ],
   exports: [
-    MailService
+    MailService, MailRepository
   ]
 })
 export class MailModule {}

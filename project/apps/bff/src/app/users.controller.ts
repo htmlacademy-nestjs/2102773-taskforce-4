@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpStatus, NotFoundException, Param, Patch, Post, Req, UploadedFile, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApplicationServiceURL } from './app.config';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
@@ -15,7 +15,9 @@ import { CheckAdminRoleGuard } from './guards/check-admin-role.guard';
 import { NewReviewDto } from './dto/new-review.dto';
 import { CheckUserRoleGuard } from './guards/check-user-role.guard';
 import { FileSize, UserError } from './app.constant';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
 export class UsersController {
@@ -23,12 +25,24 @@ export class UsersController {
     private readonly httpService: HttpService
   ) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'The new user has been successfully created.'
+  })
   @Post('register')
   public async register(@Body() createUserDto: CreateUserDto) {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/register`, createUserDto);
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User has been successfully logged.'
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Password or Login is wrong.',
+  })
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto) {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/login`, loginUserDto);
@@ -64,6 +78,10 @@ export class UsersController {
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens'
+  })
   @Post('refresh')
   public async refreshToken(@Req() req: Request) {
     const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Auth}/refresh`, null, {
@@ -74,6 +92,10 @@ export class UsersController {
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been updated.'
+  })
   @UseGuards(CheckAuthGuard)
   @Patch('update')
   public async update(@Body() UpdateUserDto: UpdateUserDto, @Req() { user: payload }: RequestWithTokenPayload, @Req() req: Request) {
@@ -86,6 +108,10 @@ export class UsersController {
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The password has been updated.'
+  })
   @UseGuards(CheckAuthGuard)
   @Patch('changePassword')
   public async changePassword(@Body() ChangePasswordDto: ChangePasswordDto, @Req() req: Request) {
@@ -118,6 +144,10 @@ export class UsersController {
     return data;
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The review has been posted.'
+  })
   @UseGuards(CheckAuthGuard, CheckAdminRoleGuard)
   @Post('/review')
   public async createReview(@Body() dto: NewReviewDto, @Req() { user: payload }: RequestWithTokenPayload) {
@@ -132,13 +162,24 @@ export class UsersController {
     return data;
   }
 
-
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The email has been sended.'
+  })
   @UseGuards(CheckAuthGuard, CheckUserRoleGuard)
   @Post('/email')
   public async sendEmail(@Body() dto, @Req() { user: payload }: RequestWithTokenPayload) {
-    const {requestDate} = dto
-    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Email}`, {email: payload.email, requestDate})
+
+    const mails = (await this.httpService.axiosRef.get(`${ApplicationServiceURL.Email}/${payload.email}`)).data;
+
+    let requestDate: Date;
+
+    if (mails.length === 0) {
+      requestDate = new Date()
+    }
+    else {requestDate = new Date(mails[0].createdAt)}
+
+    const { data } = await this.httpService.axiosRef.post(`${ApplicationServiceURL.Email}`, {email: payload.email, requestDate: requestDate})
     return data
   }
-
 }

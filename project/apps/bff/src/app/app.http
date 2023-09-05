@@ -19,7 +19,7 @@ POST http://localhost:4000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.local",
+  "email": "user2@notfound.local",
   "password": "123456"
 }
 
@@ -81,13 +81,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGY0NzFmZ
 # Create a new task
 POST http://localhost:4000/api/task HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NTk1NzksImV4cCI6MTY5Mzg2MDE3OX0.4gnNV0emppkFeqm2vxjwkxMsFHpK8wo8KwnIvhlsYPk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM5MzA5NDIsImV4cCI6MTY5MzkzMTU0Mn0.isUgrDBSWGA1eLicaU23IzypLiVDnXMh7pKuXXjTaKU
 
 {
-  "title": "Написать код и сдать проект по теме nestjs 7",
+  "title": "Написать код и сдать проект по теме nestjs 13",
   "description": "Написать код и сдать проект по теме nestjs. очень сложно. Срочно. Времени нет. Умоляю. ООООООООООЧЕНЬНАДО",
   "cityId": 1,
-  "categories": [1],
+  "categories": [1, 2],
   "price": 250,
   "address": "1233451234567",
   "dedline": "2023-09-06"
@@ -200,10 +200,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwN
 # Send Email
 POST http://localhost:4000/api/users/email/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM4NjEyNDEsImV4cCI6MTY5Mzg2MTg0MX0.gKHDNCJa649pe5xP2wGa8QHZTuDsi4buIucrHsUzwVM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODU0ZTFlNDU4Y2NkMGExZmY2MWUiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ItCY0YHQv9C-0LvQvdC40YLQtdC70YwiLCJsYXN0bmFtZSI6IlNtaXRoMiIsImZpcnN0bmFtZSI6Iktla3MyIiwiaWF0IjoxNjkzOTMwOTgzLCJleHAiOjE2OTM5MzE1ODN9.vKpRabPPZmgtC3aYXLWPyt-wSPnvuUJrDvw5_4OjkiE
+
+###
+
+
+#################################################
+
+# Create a new category
+POST http://localhost:4000/api/category HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM5MjI0NjYsImV4cCI6MTY5MzkyMzA2Nn0.-EoY8Ciu6lWlf6tVOo9ih34F2s_w2haaPMi_kuzG5x0
 
 {
-  "requestDate": "2023-09-02"
+  "title": "Сантехник"
 }
+
+###
+
+# Get all categories
+GET http://localhost:4000/api/category HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGYzODUwNjFlNDU4Y2NkMGExZmY2MTkiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJyb2xlIjoi0JfQsNC60LDQt9GH0LjQuiIsImxhc3RuYW1lIjoiU21pdGg1IiwiZmlyc3RuYW1lIjoiS2VrczQiLCJpYXQiOjE2OTM5MjI0NjYsImV4cCI6MTY5MzkyMzA2Nn0.-EoY8Ciu6lWlf6tVOo9ih34F2s_w2haaPMi_kuzG5x0
+
 
 ###

@@ -1,6 +1,6 @@
 import { CreateTaskSubscriberDto } from './dto/create-task-subscriber.dto';
 import { EmailSubscriberService } from './email-subscriber.service';
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { RabbitRouting } from '@project/shared/app-types';
 import { MailService } from '../mail/mail.service';
@@ -32,5 +32,16 @@ export class EmailSubscriberController {
   public async show(@Body() dto: CreateEmailDto) {
     const subscribers = await this.subscriberService.getSubscribers(dto)
     this.mailService.sendNotifyNewSubscriber(subscribers, dto.email);
+    this.mailService.createMailing(dto.email)
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'All mailers by email found'
+  })
+  @Get('/:email')
+  public async index(@Param('email') email: string) {
+    const mails = this.mailService.getMails(email);
+    return mails
   }
 }
