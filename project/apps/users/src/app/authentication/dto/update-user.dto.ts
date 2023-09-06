@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserCity } from "@project/shared/app-types";
-import { ArrayMaxSize, IsEnum, IsOptional, IsString, MaxDate, MaxLength } from "class-validator";
-import { AuthUserError } from "../authentication.constant";
+import { ArrayMaxSize, IsEnum, IsOptional, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
+import { AuthUserError, Length, MIN_USER_AGE } from "../authentication.constant";
 import dayjs from "dayjs";
 import { Transform } from "class-transformer";
 
@@ -12,7 +12,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @Transform(({ value }) => new Date(value))
-  @MaxDate(dayjs(new Date()).subtract(18, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
+  @MaxDate(dayjs(new Date()).subtract(MIN_USER_AGE, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
   public dateBirth: Date;
 
   @ApiProperty({
@@ -21,6 +21,8 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
+  @MinLength(Length.MinName, {message: AuthUserError.MinNameLength})
+  @MaxLength(Length.MaxName, {message: AuthUserError.MaxNameLength})
   public firstname: string;
 
   @ApiProperty({
@@ -29,6 +31,8 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
+  @MinLength(Length.MinName, {message: AuthUserError.MinNameLength})
+  @MaxLength(Length.MaxName, {message: AuthUserError.MaxNameLength})
   public lastname: string;
 
   @ApiProperty({
@@ -44,7 +48,7 @@ export class UpdateUserDto {
     example: 'Женат'
   })
   @IsOptional()
-  @MaxLength(300, {message: AuthUserError.MaxPersInfoLength})
+  @MaxLength(Length.MaxPersInfo, {message: AuthUserError.MaxPersInfoLength})
   public personalInfo?: string;
 
   @ApiProperty({
@@ -52,7 +56,7 @@ export class UpdateUserDto {
     example: 'электрик'
   })
   @IsOptional()
-  @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
+  @ArrayMaxSize(Length.MaxSpecializationArray, {message: AuthUserError.MaxSpecializationArrayLength})
   public specialization?: string[];
 
   @ApiProperty({

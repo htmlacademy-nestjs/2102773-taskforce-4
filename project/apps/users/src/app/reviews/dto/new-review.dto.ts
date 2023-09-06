@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, MinLength, MaxLength, Min, Max, IsNumber } from "class-validator";
-import { ReviewsError } from "../reviews.constant";
+import { Length, Rating, ReviewsError } from "../reviews.constant";
 import { Types } from "mongoose";
 
 export class NewReviewDto {
@@ -9,8 +9,8 @@ export class NewReviewDto {
     example: 'Проверка',
   })
   @IsString()
-  @MinLength(50, {message: ReviewsError.MinMessageLength})
-  @MaxLength(500, {message: ReviewsError.MaxMessageLength})
+  @MinLength(Length.MinMessage, {message: ReviewsError.MinMessageLength})
+  @MaxLength(Length.MaxMessage, {message: ReviewsError.MaxMessageLength})
   public message: string;
 
   @ApiProperty({
@@ -30,7 +30,7 @@ export class NewReviewDto {
     example: 5,
   })
   @IsNumber()
-  @Min(1, {message: ReviewsError.MinRating})
-  @Max(5, {message: ReviewsError.MaxRating})
+  @Min(Rating.Min, {message: ReviewsError.MinRating})
+  @Max(Rating.Max, {message: ReviewsError.MaxRating})
   public rating: number;
 }
