@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { ArrayMaxSize, IsNumber, IsOptional, IsString, Matches, MaxLength, Min, MinDate, MinLength } from "class-validator";
-import { TaskPostError } from "../task-post.constant";
+import { Length, TaskPostError } from "../task-post.constant";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreatePostDto {
@@ -9,8 +9,8 @@ export class CreatePostDto {
     example: 'Решить задачу',
   })
   @IsString()
-  @MinLength(20, {message: TaskPostError.MinTitleLength})
-  @MaxLength(50, {message: TaskPostError.MaxTitleLength})
+  @MinLength(Length.MinTitle, {message: TaskPostError.MinTitleLength})
+  @MaxLength(Length.MaxTitle, {message: TaskPostError.MaxTitleLength})
   public title: string;
 
   @ApiProperty({
@@ -18,8 +18,8 @@ export class CreatePostDto {
     example: 'Решить задачу',
   })
   @IsString()
-  @MinLength(100, {message: TaskPostError.MinDescriptionLength})
-  @MaxLength(1024, {message: TaskPostError.MaxDescriptionLength})
+  @MinLength(Length.MinDescription, {message: TaskPostError.MinDescriptionLength})
+  @MaxLength(Length.MaxDescription, {message: TaskPostError.MaxDescriptionLength})
   public description: string;
 
   @ApiProperty({
@@ -34,8 +34,8 @@ export class CreatePostDto {
     example: 'Moskovsky st, 100',
   })
   @IsString()
-  @MinLength(10, {message: TaskPostError.MinAddressLength})
-  @MaxLength(255, {message: TaskPostError.MaxAddressLength})
+  @MinLength(Length.MinAddress, {message: TaskPostError.MinAddressLength})
+  @MaxLength(Length.MaxAddress, {message: TaskPostError.MaxAddressLength})
   public address?: string;
 
   @ApiProperty({
@@ -76,18 +76,18 @@ export class CreatePostDto {
     example: 'strong',
   })
   @IsOptional()
-  @ArrayMaxSize(5, {message: TaskPostError.MaxTagsArrayLength})
+  @ArrayMaxSize(Length.MaxTagsArray, {message: TaskPostError.MaxTagsArrayLength})
   @Matches(/^[a-zа-яё][^0-9\s,.;:]*$/, {
     each: true,
     message: TaskPostError.RegExp
   })
-  @MaxLength(10, {
+  @MaxLength(Length.MaxTag, {
     each: true,
-    message: 'max 10',
+    message: TaskPostError.MaxTagLength,
   })
-  @MinLength(3, {
+  @MinLength(Length.MinTag, {
     each: true,
-    message: 'min 3',
+    message: TaskPostError.MinTagLength,
   })
   @Transform(({ value }) => value.map((tag: string) => tag.toLowerCase()))
   public tags?: string[];

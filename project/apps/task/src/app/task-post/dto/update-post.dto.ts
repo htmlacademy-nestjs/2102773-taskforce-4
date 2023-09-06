@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsString, MinLength, MaxLength, Min, IsNumber, MinDate, IsEnum, IsOptional } from "class-validator";
-import { TaskPostError } from "../task-post.constant";
+import { Length, TaskPostError } from "../task-post.constant";
 import { ApiProperty } from "@nestjs/swagger";
 import { TaskStatus } from "@project/shared/app-types";
 
@@ -11,8 +11,8 @@ export class UpdatePostDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(20, {message: TaskPostError.MinTitleLength})
-  @MaxLength(50, {message: TaskPostError.MaxTitleLength})
+  @MinLength(Length.MinTitle, {message: TaskPostError.MinTitleLength})
+  @MaxLength(Length.MaxTitle, {message: TaskPostError.MaxTitleLength})
   public title: string;
 
   @ApiProperty({
@@ -21,8 +21,8 @@ export class UpdatePostDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(100, {message: TaskPostError.MinDescriptionLength})
-  @MaxLength(1024, {message: TaskPostError.MaxDescriptionLength})
+  @MinLength(Length.MinDescription, {message: TaskPostError.MinDescriptionLength})
+  @MaxLength(Length.MaxDescription, {message: TaskPostError.MaxDescriptionLength})
   public description: string;
 
   @ApiProperty({
@@ -39,8 +39,8 @@ export class UpdatePostDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(10, {message: TaskPostError.MinAddressLength})
-  @MaxLength(255, {message: TaskPostError.MaxAddressLength})
+  @MinLength(Length.MinAddress, {message: TaskPostError.MinAddressLength})
+  @MaxLength(Length.MaxAddress, {message: TaskPostError.MaxAddressLength})
   public address?: string;
 
   @ApiProperty({

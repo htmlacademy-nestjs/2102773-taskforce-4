@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, MaxLength, MinLength } from "class-validator";
-import { TaskCommentError } from "../task-comment.constant";
+import { MessageLength, TaskCommentError } from "../task-comment.constant";
 
 export class CreateCommentDto {
   @ApiProperty({
@@ -8,8 +8,8 @@ export class CreateCommentDto {
     example: 'Проверка',
   })
   @IsString()
-  @MinLength(10, {message: TaskCommentError.MinMessageLength})
-  @MaxLength(300, {message: TaskCommentError.MaxMessageLength})
+  @MinLength(MessageLength.MinLength, {message: TaskCommentError.MinMessageLength})
+  @MaxLength(MessageLength.MaxLength, {message: TaskCommentError.MaxMessageLength})
   public message: string;
 
   @ApiProperty({

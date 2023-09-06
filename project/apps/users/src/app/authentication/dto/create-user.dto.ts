@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserCity, UserRole } from "@project/shared/app-types";
 import { ArrayMaxSize, IsEmail, IsEnum, IsOptional, IsString, MaxDate, MaxLength, MinLength } from "class-validator";
-import { AuthUserError } from "../authentication.constant";
+import { AuthUserError, Length, MIN_USER_AGE } from "../authentication.constant";
 import dayjs from "dayjs";
 import { Transform } from "class-transformer";
 
@@ -18,7 +18,7 @@ export class CreateUserDto {
     example: '1981-03-12',
   })
   @Transform(({ value }) => new Date(value))
-  @MaxDate(dayjs(new Date()).subtract(18, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
+  @MaxDate(dayjs(new Date()).subtract(MIN_USER_AGE, 'year').toDate(), {message: AuthUserError.DateBirthNotValid})
   public dateBirth: Date;
 
   @ApiProperty({
@@ -26,8 +26,8 @@ export class CreateUserDto {
     example: 'Keks',
   })
   @IsString()
-  @MinLength(3, {message: AuthUserError.MinNameLength})
-  @MaxLength(50, {message: AuthUserError.MaxNameLength})
+  @MinLength(Length.MinName, {message: AuthUserError.MinNameLength})
+  @MaxLength(Length.MaxName, {message: AuthUserError.MaxNameLength})
   public firstname: string;
 
   @ApiProperty({
@@ -35,8 +35,8 @@ export class CreateUserDto {
     example: 'Ivanov'
   })
   @IsString()
-  @MinLength(3, {message: AuthUserError.MinNameLength})
-  @MaxLength(50, {message: AuthUserError.MaxNameLength})
+  @MinLength(Length.MinName, {message: AuthUserError.MinNameLength})
+  @MaxLength(Length.MaxName, {message: AuthUserError.MaxNameLength})
   public lastname: string;
 
   @ApiProperty({
@@ -44,8 +44,8 @@ export class CreateUserDto {
     example: '123456'
   })
   @IsString()
-  @MinLength(6, {message: AuthUserError.MinPasswordLength})
-  @MaxLength(12, {message: AuthUserError.MaxPasswordLength})
+  @MinLength(Length.MinPassword, {message: AuthUserError.MinPasswordLength})
+  @MaxLength(Length.MaxPassword, {message: AuthUserError.MaxPasswordLength})
   public password: string;
 
   @ApiProperty({
@@ -67,7 +67,7 @@ export class CreateUserDto {
     example: 'Женат'
   })
   @IsOptional()
-  @MaxLength(300, {message: AuthUserError.MaxPersInfoLength})
+  @MaxLength(Length.MaxPersInfo, {message: AuthUserError.MaxPersInfoLength})
   public personalInfo?: string;
 
   @ApiProperty({
@@ -75,7 +75,7 @@ export class CreateUserDto {
     example: 'электрик'
   })
   @IsOptional()
-  @ArrayMaxSize(5, {message: AuthUserError.MaxSpecializationArrayLength})
+  @ArrayMaxSize(Length.MaxSpecializationArray, {message: AuthUserError.MaxSpecializationArrayLength})
   public specialization?: string[];
 
   @ApiProperty({
